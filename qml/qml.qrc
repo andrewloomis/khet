@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>Game.qml</file>
+        <file>MatchMaker.qml</file>
+        <file>SignUpPage.qml</file>
+        <file>LoginPage.qml</file>
+    </qresource>
+</RCC>
