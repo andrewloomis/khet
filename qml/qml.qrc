@@ -5,5 +5,15 @@
         <file>MatchMaker.qml</file>
         <file>SignUpPage.qml</file>
         <file>LoginPage.qml</file>
+        <file>res/pyramid.png</file>
+        <file>res/board.png</file>
+        <file>MainMenu.qml</file>
+        <file>MoveCircle.qml</file>
+        <file>res/circle.png</file>
+        <file>Piece.qml</file>
+        <file>Pyramid.qml</file>
+        <file>circledeploy.js</file>
+        <file>res/cwarrow.png</file>
+        <file>res/ccwarrow.png</file>
     </qresource>
 </RCC>

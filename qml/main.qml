@@ -7,82 +7,18 @@ ApplicationWindow {
     height: 1080
     title: qsTr("Khet")
 
-    Column {
-        id: column
-        anchors.centerIn: parent
-        width: parent.width /2
-        height: parent.height*0.75
-        spacing: 20
-        Text {
-            id: title
-            text: qsTr("Khet")
-            horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 70
-            width: parent.width
+    StackView {
+        id: stack
+        anchors.fill: parent
+        initialItem: mainMenu
+        Game {
+            id: game
+            anchors.fill: parent
         }
-        Button {
-            text: "Play"
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 50
-            width: parent.width/2
-            height: parent.height/8
-            onPressed: matchMaker.open()
+        MainMenu {
+            id: mainMenu
+            anchors.fill: parent
         }
-        Button {
-            text: "Log in"
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 50
-            width: parent.width/2
-            height: parent.height/8
-            onPressed: loginPage.open()
-        }
-        Button {
-            text: "Sign Up"
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 50
-            width: parent.width/2
-            height: parent.height/8
-            onPressed: signUpPage.open()
-        }
-        Button {
-            text: "Rankings"
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 50
-            width: parent.width/2
-            height: parent.height/8
-        }
-        Button {
-            text: "Settings"
-            anchors.horizontalCenter: parent.horizontalCenter
-            font.pointSize: 50
-            width: parent.width/2
-            height: parent.height/8
-        }
-        Text {
-            text: "Not logged in"
-            font.italic: true
-            horizontalAlignment: Text.AlignHCenter
-            font.pointSize: 30
-            width: parent.width
-            color: "grey"
-        }
-    }
-    MatchMaker {
-        id: matchMaker
-        anchors.centerIn: parent
-        width: parent.width/2
-        height: parent.height*0.75
-    }
-    SignUpPage {
-        id: signUpPage
-        anchors.centerIn: parent
-        width: parent.width/2
-        height: parent.height*0.55
-    }
-    LoginPage {
-        id: loginPage
-        anchors.centerIn: parent
-        width: parent.width/2
-        height: parent.height*0.35
+
     }
 }
