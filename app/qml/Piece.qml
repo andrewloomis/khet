@@ -1,7 +1,10 @@
 import QtQuick 2.0
 import "circledeploy.js" as CircleController
+import khet.gamemanager 1.0
 
 Item {
+    property GameManager gameManager
+    property int index
     property int xPos: 5
     property int yPos: 5
     property int angle: 0
@@ -20,13 +23,13 @@ Item {
     id: piece
     width: interiorSpaceWidth
     height: width
-    anchors.left: board.left
-    anchors.top: board.top
+    anchors.left: parent.left
+    anchors.top: parent.top
     anchors.leftMargin: 73 + xPos*spaceDistance
     anchors.topMargin: 73 + yPos*spaceDistance
     Image {
         id: pieceImage
-        anchors.fill: parent
+        anchors.fill: piece
         source: imageSource
         fillMode: Image.PreserveAspectFit
         rotation: angle
@@ -39,7 +42,7 @@ Item {
     }
     Rectangle {
         id: highlightRect
-        anchors.fill: parent
+        anchors.fill: piece
         anchors.margins: 10
         radius: 20
         color: "green"
@@ -51,8 +54,8 @@ Item {
         source: "res/cwarrow.png"
         fillMode: Image.PreserveAspectFit
         width: 60
-        anchors.top: parent.bottom
-        anchors.right: parent.left
+        anchors.top: piece.bottom
+        anchors.right: piece.left
         anchors.margins: -30
         opacity: 0
         z: 1
@@ -71,8 +74,8 @@ Item {
         source: "res/ccwarrow.png"
         fillMode: Image.PreserveAspectFit
         width: 60
-        anchors.bottom: parent.top
-        anchors.left: parent.right
+        anchors.bottom: piece.top
+        anchors.left: piece.right
         anchors.margins: -30
         opacity: 0
         z: 1
@@ -87,16 +90,16 @@ Item {
         }
     }
     MouseArea {
-        anchors.fill: parent
+        anchors.fill: piece
         onClicked: {
-            if (parent.state == "highlighted")
+            if (piece.state == "highlighted")
             {
-                parent.state = "nonhighlighted";
+                piece.state = "nonhighlighted";
                 CircleController.retract()
             }
             else {
-                parent.state = "highlighted";
-                var positions = 255;
+                piece.state = "highlighted";
+                var positions = gameManager.possibleTranslationsForPiece(index);
                 CircleController.deploy(positions)
             }
         }

@@ -15,5 +15,7 @@
         <file>circledeploy.js</file>
         <file>res/cwarrow.png</file>
         <file>res/ccwarrow.png</file>
+        <file>gameloader.js</file>
+        <file>Board.qml</file>
     </qresource>
 </RCC>

@@ -1,3 +1,3 @@
-[submodule "libkhet"]
-	path = libkhet
-	url = https://github.com/andrewloomis/libkhet.git
+[submodule "khetlib"]
+	path = khetlib
+	url = https://github.com/andrewloomis/khetlib.git
