@@ -13,6 +13,8 @@ public:
     explicit GameManager(QObject *parent = nullptr);
     Q_INVOKABLE QList<int> getPiecePositions() const;
     Q_INVOKABLE int possibleTranslationsForPiece(int index);
+    Q_INVOKABLE void updatePiecePosition(int index, int x, int y, int angle);
+    Q_INVOKABLE QList<int> getBeamCoords() const;
 signals:
 
 public slots:

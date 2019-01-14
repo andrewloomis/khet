@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import "circledeploy.js" as CircleController
+import "coordcalculator.js" as CoordCalculator
 import khet.gamemanager 1.0
 
 Item {
@@ -9,13 +10,15 @@ Item {
     property int yPos: 5
     property int angle: 0
     property string rotDir: ""
-    property int spaceDistance: 97
+//    property int spaceDistance: 97
     property int interiorSpaceWidth: 90
     property string imageSource: ""
 
     function updatePosition(newX, newY) {
         xPos = newX
         yPos = newY
+        console.log("piece ", index, " moved to ", xPos, ",", yPos)
+        gameManager.updatePiecePosition(index, xPos, yPos, angle);
         state = "nonhighlighted"
         CircleController.retract()
     }
@@ -25,8 +28,8 @@ Item {
     height: width
     anchors.left: parent.left
     anchors.top: parent.top
-    anchors.leftMargin: 73 + xPos*spaceDistance
-    anchors.topMargin: 73 + yPos*spaceDistance
+    anchors.leftMargin: CoordCalculator.pieceLeftAnchor(xPos)
+    anchors.topMargin: CoordCalculator.pieceTopAnchor(yPos)
     Image {
         id: pieceImage
         anchors.fill: piece
@@ -63,7 +66,8 @@ Item {
             anchors.fill: parent
             onClicked: {
                 rotDir = "CW"
-                angle += 90
+                angle = (angle % 360) + 90
+                console.log("piece", index, "rotating CW to", angle, "degrees")
                 piece.state = "nonhighlighted";
                 CircleController.retract()
             }
@@ -83,7 +87,8 @@ Item {
             anchors.fill: parent
             onClicked: {
                 rotDir = "CCW"
-                angle -= 90
+                angle = (angle % 360) - 90
+                console.log("piece", index, "rotating CCW to", angle, "degrees")
                 piece.state = "nonhighlighted";
                 CircleController.retract()
             }
@@ -114,10 +119,12 @@ Item {
             PropertyChanges {
                 target: cwArrow
                 opacity: 1
+                enabled: true
             }
             PropertyChanges {
                 target: ccwArrow
                 opacity: 1
+                enabled: true
             }
         },
         State {
@@ -129,10 +136,12 @@ Item {
             PropertyChanges {
                 target: cwArrow
                 opacity: 0
+                enabled: false
             }
             PropertyChanges {
                 target: ccwArrow
                 opacity: 0
+                enabled: false
             }
         }
     ]

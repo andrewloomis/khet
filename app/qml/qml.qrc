@@ -17,5 +17,8 @@
         <file>res/ccwarrow.png</file>
         <file>gameloader.js</file>
         <file>Board.qml</file>
+        <file>LaserBeam.qml</file>
+        <file>beammapper.js</file>
+        <file>coordcalculator.js</file>
     </qresource>
 </RCC>
