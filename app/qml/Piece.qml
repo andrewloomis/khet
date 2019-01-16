@@ -8,8 +8,8 @@ Item {
     property int index
     property int xPos: 5
     property int yPos: 5
-    property int angle: 0
-    property string rotDir: ""
+    property int angle
+    property string rotDir: "CW"
 //    property int spaceDistance: 97
     property int interiorSpaceWidth: 90
     property string imageSource: ""
@@ -67,6 +67,7 @@ Item {
             onClicked: {
                 rotDir = "CW"
                 angle = (angle % 360) + 90
+                gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CW to", angle, "degrees")
                 piece.state = "nonhighlighted";
                 CircleController.retract()
@@ -87,7 +88,8 @@ Item {
             anchors.fill: parent
             onClicked: {
                 rotDir = "CCW"
-                angle = (angle % 360) - 90
+                angle = (angle == 0 || angle == 360) ? 270 : (angle % 360) - 90
+                gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CCW to", angle, "degrees")
                 piece.state = "nonhighlighted";
                 CircleController.retract()

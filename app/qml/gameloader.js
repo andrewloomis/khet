@@ -9,9 +9,9 @@ function init(parent, manager)
 }
 
 function loadGame(pieceLayout) {
-    for (var i = 0; i < pieceLayout.length; i+=2)
+    for (var i = 0; i < pieceLayout.length; i+=3)
     {
-        makePiece([pieceLayout[i], pieceLayout[i+1]], i/2)
+        makePiece([pieceLayout[i], pieceLayout[i+1], pieceLayout[i+2]], i/3)
     }
 }
 
@@ -22,6 +22,7 @@ function makePiece(piecePosition, index)
         var pyramid = comp.createObject(board)
         pyramid.xPos = piecePosition[0]
         pyramid.yPos = piecePosition[1]
+        pyramid.angle = piecePosition[2]
         pyramid.index = index
         pyramid.gameManager = gameManager
         pieces.push(pyramid)

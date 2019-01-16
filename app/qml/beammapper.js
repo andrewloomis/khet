@@ -36,16 +36,13 @@ function createBeam(coords)
             beamPart.height = CoordCalculator.getBeamHeight()
             beamPart.anchors.leftMargin = CoordCalculator.getBeamLeftMargin()
             beamPart.anchors.topMargin = CoordCalculator.getBeamTopMargin()
-//            console.log("width:", beamPart.width)
-//            console.log("height:", beamPart.height)
-//            console.log("leftMargin:", beamPart.anchors.leftMargin)
-//            console.log("topMargin:", beamPart.anchors.topMargin)
             beamParts.push(beamPart)
         }
         else if (comp.status === Component.Error) {
             console.log("error creating beamPart: ", comp.errorString())
         }
     }
+    CoordCalculator.resetBeamDirection()
 }
 
 function destroyBeam()
