@@ -20,5 +20,6 @@
         <file>LaserBeam.qml</file>
         <file>beammapper.js</file>
         <file>coordcalculator.js</file>
+        <file>Djed.qml</file>
     </qresource>
 </RCC>

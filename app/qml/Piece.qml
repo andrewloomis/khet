@@ -5,22 +5,31 @@ import khet.gamemanager 1.0
 
 Item {
     property GameManager gameManager
+    property Board board
     property int index
     property int xPos: 5
     property int yPos: 5
     property int angle
     property string rotDir: "CW"
-//    property int spaceDistance: 97
     property int interiorSpaceWidth: 90
     property string imageSource: ""
 
     function updatePosition(newX, newY) {
+        // Is Swap?
+        var swappedPieceIndex = gameManager.isPieceAtPosition(newX, newY)
+        if (swappedPieceIndex >= 0)
+        {
+            gameManager.updatePiecePosition(swappedPieceIndex, xPos, yPos);
+            var swappedPiece = board.getPiece(swappedPieceIndex)
+            swappedPiece.xPos = xPos
+            swappedPiece.yPos = yPos
+        }
+
         xPos = newX
         yPos = newY
         console.log("piece ", index, " moved to ", xPos, ",", yPos)
-        gameManager.updatePiecePosition(index, xPos, yPos, angle);
+        gameManager.updatePiecePosition(index, xPos, yPos);
         state = "nonhighlighted"
-        CircleController.retract()
     }
 
     id: piece
@@ -54,6 +63,7 @@ Item {
     }
     Image {
         id: cwArrow
+        property bool clickEnabled: false
         source: "res/cwarrow.png"
         fillMode: Image.PreserveAspectFit
         width: 60
@@ -64,18 +74,19 @@ Item {
         z: 1
         MouseArea {
             anchors.fill: parent
+            enabled: parent.clickEnabled
             onClicked: {
                 rotDir = "CW"
                 angle = (angle % 360) + 90
                 gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CW to", angle, "degrees")
                 piece.state = "nonhighlighted";
-                CircleController.retract()
             }
         }
     }
     Image {
         id: ccwArrow
+        property bool clickEnabled: false
         source: "res/ccwarrow.png"
         fillMode: Image.PreserveAspectFit
         width: 60
@@ -86,13 +97,13 @@ Item {
         z: 1
         MouseArea {
             anchors.fill: parent
+            enabled: parent.clickEnabled
             onClicked: {
                 rotDir = "CCW"
                 angle = (angle == 0 || angle == 360) ? 270 : (angle % 360) - 90
                 gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CCW to", angle, "degrees")
                 piece.state = "nonhighlighted";
-                CircleController.retract()
             }
         }
     }
@@ -105,9 +116,13 @@ Item {
                 CircleController.retract()
             }
             else {
+                forceActiveFocus()
                 piece.state = "highlighted";
-                var positions = gameManager.possibleTranslationsForPiece(index);
-                CircleController.deploy(positions)
+            }
+        }
+        onActiveFocusChanged: {
+            if (!activeFocus && piece.state === "highlighted") {
+                piece.state = "nonhighlighted";
             }
         }
     }
@@ -121,12 +136,18 @@ Item {
             PropertyChanges {
                 target: cwArrow
                 opacity: 1
-                enabled: true
+                clickEnabled: true
             }
             PropertyChanges {
                 target: ccwArrow
                 opacity: 1
-                enabled: true
+                clickEnabled: true
+            }
+            StateChangeScript {
+                script: {
+                    var positions = gameManager.possibleTranslationsForPiece(index);
+                    CircleController.deploy(positions)
+                }
             }
         },
         State {
@@ -138,12 +159,17 @@ Item {
             PropertyChanges {
                 target: cwArrow
                 opacity: 0
-                enabled: false
+                clickEnabled: false
             }
             PropertyChanges {
                 target: ccwArrow
                 opacity: 0
-                enabled: false
+                clickEnabled: false
+            }
+            StateChangeScript {
+                script: {
+                    CircleController.retract()
+                }
             }
         }
     ]
@@ -155,7 +181,8 @@ Item {
         }
     }
 
-//    transform: Rotation {
+//    Connections {
+//        id: gameManager
 
 //    }
 

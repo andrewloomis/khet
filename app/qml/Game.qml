@@ -7,16 +7,9 @@ import QtQuick.Layouts 1.3
 
 Page {
     id: gamePage
-    Button {
 
-    }
     Board {
         id: board
-//        Component.onCompleted: {
-//            BeamMapper.init(board)
-//            GameLoader.init(board, gameManager)
-//            GameLoader.loadGame(gameManager.getPiecePositions())
-//        }
     }
 
     background: Rectangle {

@@ -10,6 +10,12 @@ Image {
     source: "res/board.png"
     anchors.centerIn: parent
     z: -1
+
+    function getPiece(index)
+    {
+        return GameLoader.getPiece(index)
+    }
+
     Button {
         id: button
         width: 35

@@ -8,14 +8,25 @@ GameManager::GameManager(QObject *parent) : QObject(parent)
 QList<int> GameManager::getPiecePositions() const
 {
     QList<int> positions;
-    std::vector<std::shared_ptr<Piece>> pieces = game.getPieces();
-    for (auto& piece : pieces)
+    const auto& pieces = game.getPieces();
+    for (const auto& piece : pieces)
     {
         positions.append(piece->position().x);
         positions.append(piece->position().y);
         positions.append(piece->angle());
+        positions.append(static_cast<int>(piece->type()));
     }
     return positions;
+}
+
+int GameManager::isPieceAtPosition(int x, int y) const
+{
+    const auto& pieces = game.getPieces();
+    for (const auto& piece : pieces)
+    {
+        if (piece->position().x == x && piece->position().y == y) return piece->index();
+    }
+    return -1;
 }
 
 int GameManager::possibleTranslationsForPiece(int index)
@@ -33,7 +44,7 @@ void GameManager::updatePieceAngle(int index, int angle)
     game.updatePieceAngle(static_cast<std::size_t>(index),angle);
 }
 
-QList<int> GameManager::getBeamCoords() const
+QList<int> GameManager::getBeamCoords()
 {
     return game.calculateBeamCoords();
 }
