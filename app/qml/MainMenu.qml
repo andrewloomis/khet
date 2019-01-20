@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
+import khet.loginmanager 1.0
+
 Page {
     Column {
         id: column
@@ -73,12 +75,17 @@ Page {
         id: signUpPage
         anchors.centerIn: parent
         width: parent.width/2
-        height: parent.height*0.55
+//        height: parent.height*0.55
+        loginManager: loginManager
     }
     LoginPage {
         id: loginPage
         anchors.centerIn: parent
         width: parent.width/2
         height: parent.height*0.35
+        loginManager: loginManager
+    }
+    LoginManager {
+        id: loginManager
     }
 }

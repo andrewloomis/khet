@@ -11,6 +11,7 @@ Image {
     anchors.centerIn: parent
     z: -1
 
+
     function getPiece(index)
     {
         return GameLoader.getPiece(index)
@@ -24,29 +25,37 @@ Image {
         anchors.bottom: parent.bottom
         anchors.rightMargin: 85
         anchors.bottomMargin: 10
+        property bool beamCreated: false
         background: Rectangle {
             id: rect
             anchors.fill: parent
             radius: width/2
             color: "red"
-
         }
         onPressed: {
-            BeamMapper.createBeam(gameManager.getBeamCoords())
+            if (gameManager.isGodMode() || gameManager.isPlayerTurn())
+            {
+                BeamMapper.createBeam(gameManager.getBeamCoords())
+                beamCreated = true
+            }
             rect.color = "#4F0000"
         }
-        onReleased: {
-            BeamMapper.destroyBeam()
-            rect.color = "red"
+        onHoveredChanged: {
+            if(beamCreated) {
+                BeamMapper.destroyBeam()
+                rect.color = "red"
+                beamCreated = false
+            }
         }
 
-//        states: State {
-//            when: button.pressed
-//            PropertyChanges {
-//                target: rect
-//                color: "#4F0000"
-//            }
-//        }
+        onReleased: {
+            if(beamCreated) {
+                BeamMapper.destroyBeam()
+                rect.color = "red"
+                beamCreated = false
+            }
+        }
+
     }
     GameManager {
         id: gameManager

@@ -20,52 +20,43 @@ function getPiece(index)
 }
 
 function loadGame(pieceLayout) {
-    var packetSize = 4;
+    var packetSize = 5;
     for (var i = 0; i < pieceLayout.length; i+=packetSize)
     {
-        switch(pieceLayout[i+3])
-        {
-        case PieceType.Pyramid:
-            makePyramid([pieceLayout[i], pieceLayout[i+1], pieceLayout[i+2]], i/packetSize)
-            break;
-        case PieceType.Djed:
-            makeDjed([pieceLayout[i], pieceLayout[i+1], pieceLayout[i+2]], i/packetSize)
-            break;
-        }
-
-
+        makePiece([pieceLayout[i], pieceLayout[i+1], pieceLayout[i+2]],
+                  pieceLayout[i+3], pieceLayout[i+4], i/packetSize)
     }
 }
 
-function makePyramid(piecePosition, index)
+function makePiece(piecePosition, type, color, index)
 {
-    var comp = Qt.createComponent("qrc:/Pyramid.qml");
-    if (comp.status === Component.Ready) {
-        var pyramid = comp.createObject(board)
-        pyramid.xPos = piecePosition[0]
-        pyramid.yPos = piecePosition[1]
-        pyramid.angle = piecePosition[2]
-        pyramid.index = index
-        pyramid.gameManager = gameManager
-        pieces.push(pyramid)
+    var comp = Qt.createComponent("qrc:/Piece.qml")
+    var image
+    switch(type)
+    {
+    case PieceType.Pyramid:
+        image = color === 0 ? "res/red-pyramid.png" : "res/grey-pyramid.png"
+        break;
+    case PieceType.Djed:
+        image = color === 0 ? "res/red-djed.png" : "res/grey-djed.png"
+        break;
+    case PieceType.Obelisk:
+        image = color === 0 ? "res/red-obelisk-stacked.png" : "res/grey-obelisk-stacked.png"
+        break;
+    case PieceType.Pharoah:
+        image = color === 0 ? "res/red-pharoah.png" : "res/grey-pharoah.png"
+        break;
     }
-    else if (comp.status === Component.Error) {
-        console.log("error creating piece: ", comp.errorString())
-    }
-}
-
-function makeDjed(piecePosition, index)
-{
-    var comp = Qt.createComponent("qrc:/Djed.qml");
     if (comp.status === Component.Ready) {
-        var djed = comp.createObject(board)
-        djed.xPos = piecePosition[0]
-        djed.yPos = piecePosition[1]
-        djed.angle = piecePosition[2]
-        djed.index = index
-        djed.gameManager = gameManager
-        djed.board = board
-        pieces.push(djed)
+        var piece = comp.createObject(board)
+        piece.imageSource = image
+        piece.xPos = piecePosition[0]
+        piece.yPos = piecePosition[1]
+        piece.angle = piecePosition[2]
+        piece.index = index
+        piece.board = board
+        piece.gameManager = gameManager
+        pieces.push(piece)
     }
     else if (comp.status === Component.Error) {
         console.log("error creating piece: ", comp.errorString())

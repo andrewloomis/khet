@@ -1,16 +1,29 @@
 #ifndef NETWORKMANAGER_H
 #define NETWORKMANAGER_H
 
-#include <QtNetwork>
-#include <memory>
+#include <QtCore/QObject>
+#include <QtWebSockets/QWebSocket>
+#include <QtNetwork/QSslError>
+#include <QtCore/QList>
+#include <QtCore/QString>
+#include <QtCore/QUrl>
 
-class NetworkManager
+class NetworkManager : public QObject
 {
+    Q_OBJECT
 public:
-    NetworkManager();
+    explicit NetworkManager(QObject *parent = nullptr);
+    void send(const QByteArray& data);
+
+private slots:
+    void onConnected();
+    void onTextMessageReceived(QString message);
+    void onBinaryMessageReceived(QByteArray message);
+    void onSslErrors(const QList<QSslError> &errors);
 
 private:
-    std::unique_ptr<QNetworkAccessManager> manager;
+    QWebSocket webSocket;
+    QString serverIp = "wss://100.16.106.184:60001";
 };
 
 #endif // NETWORKMANAGER_H

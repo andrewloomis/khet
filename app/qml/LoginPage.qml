@@ -1,9 +1,11 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
+import khet.loginmanager 1.0
 
 Popup {
     dim: true
+    property LoginManager loginManager
     Column {
         anchors.fill: parent
         anchors.margins: 30
@@ -35,6 +37,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
+                id: password
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -47,6 +50,9 @@ Popup {
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Login"
             font.pixelSize: 40
+            onPressed: {
+
+            }
         }
     }
 

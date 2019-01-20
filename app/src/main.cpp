@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <gamemanager.h>
+#include "gamemanager.h"
+#include "loginmanager.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,6 +10,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<GameManager>("khet.gamemanager", 1, 0, "GameManager");
+    qmlRegisterType<LoginManager>("khet.loginmanager", 1, 0, "LoginManager");
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 

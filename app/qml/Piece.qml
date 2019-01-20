@@ -30,6 +30,7 @@ Item {
         console.log("piece ", index, " moved to ", xPos, ",", yPos)
         gameManager.updatePiecePosition(index, xPos, yPos);
         state = "nonhighlighted"
+        gameManager.turnFinished()
     }
 
     id: piece
@@ -41,7 +42,7 @@ Item {
     anchors.topMargin: CoordCalculator.pieceTopAnchor(yPos)
     Image {
         id: pieceImage
-        anchors.fill: piece
+        anchors.centerIn: piece
         source: imageSource
         fillMode: Image.PreserveAspectFit
         rotation: angle
@@ -110,14 +111,18 @@ Item {
     MouseArea {
         anchors.fill: piece
         onClicked: {
-            if (piece.state == "highlighted")
+            if (gameManager.isGodMode() || (gameManager.getPieceColor(index) === gameManager.getMyColor() &&
+                    gameManager.isPlayerTurn()))
             {
-                piece.state = "nonhighlighted";
-                CircleController.retract()
-            }
-            else {
-                forceActiveFocus()
-                piece.state = "highlighted";
+                if (piece.state == "highlighted")
+                {
+                    piece.state = "nonhighlighted";
+                    CircleController.retract()
+                }
+                else {
+                    forceActiveFocus()
+                    piece.state = "highlighted";
+                }
             }
         }
         onActiveFocusChanged: {

@@ -1,6 +1,7 @@
 #include "gamemanager.h"
 
-GameManager::GameManager(QObject *parent) : QObject(parent)
+GameManager::GameManager(QObject *parent)
+    : QObject(parent), game(true)
 {
 
 }
@@ -15,8 +16,14 @@ QList<int> GameManager::getPiecePositions() const
         positions.append(piece->position().y);
         positions.append(piece->angle());
         positions.append(static_cast<int>(piece->type()));
+        positions.append(static_cast<int>(piece->color()));
     }
     return positions;
+}
+
+int GameManager::getPieceColor(int index) const
+{
+    return game.getPieceColor(static_cast<std::size_t>(index)) == Color::Red ? 0 : 1;
 }
 
 int GameManager::isPieceAtPosition(int x, int y) const

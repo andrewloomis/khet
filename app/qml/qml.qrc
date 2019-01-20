@@ -5,13 +5,11 @@
         <file>MatchMaker.qml</file>
         <file>SignUpPage.qml</file>
         <file>LoginPage.qml</file>
-        <file>res/pyramid.png</file>
         <file>res/board.png</file>
         <file>MainMenu.qml</file>
         <file>MoveCircle.qml</file>
         <file>res/circle.png</file>
         <file>Piece.qml</file>
-        <file>Pyramid.qml</file>
         <file>circledeploy.js</file>
         <file>res/cwarrow.png</file>
         <file>res/ccwarrow.png</file>
@@ -20,6 +18,15 @@
         <file>LaserBeam.qml</file>
         <file>beammapper.js</file>
         <file>coordcalculator.js</file>
-        <file>Djed.qml</file>
+        <file>res/red-pharoah.png</file>
+        <file>res/red-pyramid.png</file>
+        <file>res/red-djed.png</file>
+        <file>res/red-obelisk-stacked.png</file>
+        <file>res/red-obelisk.png</file>
+        <file>res/grey-pharoah.png</file>
+        <file>res/grey-djed.png</file>
+        <file>res/grey-obelisk.png</file>
+        <file>res/grey-pyramid.png</file>
+        <file>res/grey-obelisk-stacked.png</file>
     </qresource>
 </RCC>

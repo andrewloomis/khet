@@ -1,10 +1,14 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-
+import khet.loginmanager 1.0
 Popup {
+    id: root
     dim: true
+    height: column.childrenRect.height + 70
+    property LoginManager loginManager
     Column {
+        id: column
         anchors.fill: parent
         anchors.margins: 30
         spacing: 40
@@ -25,6 +29,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
+                id: usernameField
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -42,6 +47,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
+                id: passwordField
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -59,6 +65,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
+                id: confirmPasswordField
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -66,12 +73,54 @@ Popup {
                 echoMode: TextInput.Password
             }
         }
+
+        Text {
+            id: warningText
+            visible: false
+            text: "warning"
+            height: parent.height/13
+            font.pixelSize: 35
+            color: "red"
+            anchors.horizontalCenter: parent.horizontalCenter
+            textFormat: Text.AlignHCenter
+        }
+
         RoundButton {
+            id: button
             width: parent.width/2
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Done"
             font.pixelSize: 40
+            onPressed: {
+                if (passwordField.text != confirmPasswordField.text)
+                {
+                    warningText.text = "passwords do not match!"
+                    warningText.visible = true
+                }
+                else if (passwordField.text.length < 6)
+                {
+                    warningText.text = "password must be at least 6 characters!"
+                    warningText.visible = true
+                }
+
+                else
+                {
+                    warningText.visible = false
+                    if (!loginManager.registerUser(usernameField.text, passwordField.text))
+                    {
+                        warningText.text = "username already taken!"
+                        warningText.visible = true
+                        usernameField.text = ""
+                    }
+                    else {
+                        root.close()
+                    }
+                }
+                passwordField.text = ""
+                confirmPasswordField.text = ""
+            }
         }
+
     }
 
     background: Rectangle {

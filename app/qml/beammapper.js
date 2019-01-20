@@ -45,6 +45,7 @@ function createBeam(coords)
     CoordCalculator.resetBeamDirection()
 }
 
+
 function destroyBeam()
 {
     beamParts.forEach(destroyPart)

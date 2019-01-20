@@ -1,4 +1,4 @@
-QT += quick network
+QT += quick websockets
 CONFIG += c++17
 TARGET = khet
 # The following define makes your compiler emit warnings if you use
@@ -15,11 +15,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         src/main.cpp \
     src/networkmanager.cpp \
-    src/gamemanager.cpp
+    src/gamemanager.cpp \
+    src/loginmanager.cpp
 
 HEADERS += \
     inc/networkmanager.h \
-    inc/gamemanager.h
+    inc/gamemanager.h \
+    inc/loginmanager.h
 
 RESOURCES += qml/qml.qrc
 
@@ -34,8 +36,8 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
-INCLUDEPATH += inc/
-
+INCLUDEPATH += inc/ cryptopp800/include/
+LIBS += -L$$PWD/cryptopp800/lib -lcryptopp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../khetlib/release/ -lkhetlib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../khetlib/debug/ -lkhetlib
