@@ -4,9 +4,12 @@ import QtQuick.Layouts 1.3
 import khet.loginmanager 1.0
 
 Popup {
+    id: root
     dim: true
+    height: column.childrenRect.height + 70
     property LoginManager loginManager
     Column {
+        id: column
         anchors.fill: parent
         anchors.margins: 30
         spacing: 40
@@ -20,6 +23,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
+                id: usernameField
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -37,7 +41,7 @@ Popup {
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
-                id: password
+                id: passwordField
                 font.pointSize: 40
                 color: "grey"
                 clip: true
@@ -45,13 +49,81 @@ Popup {
                 echoMode: TextInput.Password
             }
         }
+
+        Text {
+            id: warningText
+            visible: false
+            text: "warning"
+            height: parent.height/13
+            font.pixelSize: 35
+            color: "red"
+            anchors.horizontalCenter: parent.horizontalCenter
+            textFormat: Text.AlignHCenter
+        }
+
         RoundButton {
+            id: button
+            property color backgroundColor: "white"
+
             width: parent.width/2
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Login"
-            font.pixelSize: 40
-            onPressed: {
+            contentItem: Text {
+                id: buttonText
+                text: parent.text
+//                color: parent.textColor
+                font.pixelSize: 40
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
 
+            }
+            clip: true
+            onPressed: {
+                warningText.visible = false
+                loginManager.loginUser(usernameField.text, passwordField.text)
+                state = "waiting"
+                passwordField.text = ""
+            }
+            states: State {
+                name: "waiting"
+                PropertyChanges {
+                    target: button
+                    backgroundColor: "blue"
+                }
+                StateChangeScript {
+                    script: {
+                        waitTimer.start()
+                    }
+                }
+            }
+            transitions: Transition {
+                ColorAnimation {
+                    duration: 1500
+                }
+            }
+
+            Timer {
+                id: waitTimer
+                interval: 1500
+                onTriggered: {
+                    parent.state = ""
+                    if (!loginManager.isLoggedIn())
+                    {
+                        warningText.text = "username/password invalid"
+                        warningText.visible = true
+                        usernameField.text = ""
+                    }
+                    else {
+                        usernameField.text = ""
+                        root.close()
+                    }
+                }
+            }
+
+            background: Rectangle {
+                radius: parent.radius
+                color: parent.backgroundColor
+//                opacity: 0.7
             }
         }
     }

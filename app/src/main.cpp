@@ -1,7 +1,11 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
+#include <QQmlContext>
 #include "gamemanager.h"
 #include "loginmanager.h"
+#include "matchmaker.h"
+#include "networkmanager.h"
+#include <memory>
 
 int main(int argc, char *argv[])
 {
@@ -11,8 +15,24 @@ int main(int argc, char *argv[])
 
     qmlRegisterType<GameManager>("khet.gamemanager", 1, 0, "GameManager");
     qmlRegisterType<LoginManager>("khet.loginmanager", 1, 0, "LoginManager");
+    qmlRegisterType<MatchMaker>("khet.matchmaker", 1, 0, "MatchMaker");
+
     QQmlApplicationEngine engine;
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+
+    auto nm = std::make_shared<NetworkManager>();
+    auto player = std::make_shared<Player>();
+    auto root = engine.rootObjects().first();
+    auto gameManager = root->findChild<GameManager*>("gameManager");
+    gameManager->addNetworkManager(nm);
+    gameManager->addPlayer(player);
+    auto loginManager = root->findChild<LoginManager*>("loginManager");
+    loginManager->addNetworkManager(nm);
+    loginManager->addPlayer(player);
+    auto matchMaker = root->findChild<MatchMaker*>("matchMaker");
+    matchMaker->addNetworkManager(nm);
+    matchMaker->addPlayer(player);
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, loginManager, &LoginManager::logout);
 
     if (engine.rootObjects().isEmpty())
         return -1;

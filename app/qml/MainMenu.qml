@@ -23,7 +23,8 @@ Page {
             width: parent.width/2
             height: parent.height/8
             onPressed: {
-                stack.push(game)
+                gameSelectPopup.open()
+                //stack.push(game)
             }
         }
         Button {
@@ -57,6 +58,7 @@ Page {
             height: parent.height/8
         }
         Text {
+            id: loginText
             text: "Not logged in"
             font.italic: true
             horizontalAlignment: Text.AlignHCenter
@@ -64,28 +66,45 @@ Page {
             width: parent.width
             color: "grey"
         }
+        RoundButton {
+            id: logoutButton
+            visible: false
+            anchors.horizontalCenter: parent.horizontalCenter
+            text: "Logout"
+            onPressed: {
+                visible = false
+                loginManager.logout()
+                loginText.text = "Not logged in"
+            }
+        }
     }
-    MatchMaker {
-        id: matchMaker
+    MatchMakerPopup {
+        id: matchMakerPopup
         anchors.centerIn: parent
-        width: parent.width/2
-        height: parent.height*0.75
     }
+    GameSelectPopup {
+        id: gameSelectPopup
+        anchors.centerIn: parent
+    }
+
     SignUpPage {
         id: signUpPage
         anchors.centerIn: parent
         width: parent.width/2
-//        height: parent.height*0.55
         loginManager: loginManager
     }
     LoginPage {
         id: loginPage
         anchors.centerIn: parent
         width: parent.width/2
-        height: parent.height*0.35
         loginManager: loginManager
     }
     LoginManager {
         id: loginManager
+        objectName: "loginManager"
+        onLoggedIn: {
+            loginText.text = "Logged in as " + username
+            logoutButton.visible = true
+        }
     }
 }

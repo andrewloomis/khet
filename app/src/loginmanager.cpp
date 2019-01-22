@@ -1,56 +1,106 @@
 #include "loginmanager.h"
-#include "cryptopp/sha.h"
-#include "cryptopp/hex.h"
-#include "cryptopp/osrng.h"
 #include <string>
 #include <QDebug>
 #include <QJsonObject>
-#include <QJsonArray>
 #include <QJsonDocument>
-//#include <QByteArray>
-
-#define SALT_SIZE 32
+#include <QRandomGenerator>
+#include <QCryptographicHash>
 
 LoginManager::LoginManager()
 {
 
 }
 
-bool LoginManager::registerUser(QString username, QString password)
+void LoginManager::addNetworkManager(std::shared_ptr<NetworkManager> nm)
 {
-    using namespace CryptoPP;
+    network = nm;
+    connect(network.get(), &NetworkManager::signUpReply, this, &LoginManager::signUpReply);
+    connect(network.get(), &NetworkManager::loginReply, this, &LoginManager::loginReply);
+    connect(network.get(), &NetworkManager::saltReceived, this, &LoginManager::saltReceived);
+}
 
-    byte saltArray[SALT_SIZE];
-    AutoSeededRandomPool pool;
-    for (unsigned int i = 0; i < sizeof(saltArray); i++)
+void LoginManager::logout()
+{
+    if (player->isLoggedIn())
     {
-        saltArray[i] = pool.GenerateByte();
+        qDebug() << "Logging out";
+        player->logout();
+        QJsonObject data;
+        data["user"] = player->getUsername();
+        network->sendRequest(NetworkManager::Request::Logout, data);
     }
-    HexEncoder saltEncoder;
-    std::string salt;
-    saltEncoder.Attach(new StringSink(salt));
-    saltEncoder.Put(saltArray, sizeof(saltArray));
-    saltEncoder.MessageEnd();
-    auto pw = password.toLocal8Bit() + salt.c_str();
+}
 
-    byte digest[SHA256::DIGESTSIZE];
-    SHA256().CalculateDigest(digest,
-          reinterpret_cast<byte*>(pw.data()), static_cast<size_t>(pw.size()));
-    std::string output;
-    HexEncoder encoder;
-    encoder.Attach(new StringSink(output));
-    encoder.Put(digest, sizeof(digest));
-    encoder.MessageEnd();
+void LoginManager::signUpReply(QString username, bool result)
+{
+    if (result) {
+//        m_isLoggedIn = true;
+        player->setUsername(username);
+        emit loggedIn();
+    }
+}
+
+void LoginManager::loginReply(QString username, bool result)
+{
+    if (result) {
+//        m_isLoggedIn = true;
+        player->setUsername(username);
+        emit loggedIn();
+    }
+}
+
+void LoginManager::saltReceived(QString username, QString salt, bool result)
+{
+    if (!result && salt == "")
+    {
+        qDebug() << "user" << username << "does not exist";
+        emit userDoesNotExist();
+    }
+    else
+    {
+        QJsonObject data;
+        data["user"] = username;
+        data["hash"] = hash(salt, tempPassword);
+    //    qDebug() << "Salt:" << salt << '\n' << "hash:" << hash;
+        network->sendRequest(NetworkManager::Request::Login, data);
+    }
+}
+
+QString LoginManager::generateSalt()
+{
+    auto rng = QRandomGenerator::securelySeeded();
+    QString salt;
+    for(int i=0; i<saltSize/4; ++i)
+    {
+        salt += QString::number(rng.generate(), 16);
+    }
+    return salt;
+}
+
+QString LoginManager::hash(QString salt, QString password)
+{
+    auto hash = QCryptographicHash(QCryptographicHash::Sha256).hash(salt.toLocal8Bit() +
+                              password.toLocal8Bit(), QCryptographicHash::Sha256).toHex();
+    return QString(hash);
+}
+
+void LoginManager::registerUser(QString username, QString password)
+{
+    auto salt = generateSalt();
+    auto hashStr = hash(salt, password);
 
     QJsonObject data;
     data["user"] = username;
-    data["salt"] = salt.c_str();
-    data["hash"] = output.c_str();
+    data["salt"] = salt;
+    data["hash"] = hashStr;
+//    qDebug() << "Salt:" << salt << '\n' << "hash:" << hash;
+    network->sendRequest(NetworkManager::Request::SignUp, data);
+}
 
-    QJsonObject json;
-    json["request"] = "signup";
-    json["data"] = data;
-    network.send(QJsonDocument(json).toJson());
-//    qDebug() << salt.c_str() << '\n' << output.c_str();
-    return true;
+void LoginManager::loginUser(QString username, QString password)
+{
+    QJsonObject data;
+    tempPassword = password;
+    data["user"] = username;
+    network->sendRequest(NetworkManager::Request::Salt, data);
 }

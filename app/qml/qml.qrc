@@ -2,7 +2,7 @@
     <qresource prefix="/">
         <file>main.qml</file>
         <file>Game.qml</file>
-        <file>MatchMaker.qml</file>
+        <file>MatchMakerPopup.qml</file>
         <file>SignUpPage.qml</file>
         <file>LoginPage.qml</file>
         <file>res/board.png</file>
@@ -28,5 +28,8 @@
         <file>res/grey-obelisk.png</file>
         <file>res/grey-pyramid.png</file>
         <file>res/grey-obelisk-stacked.png</file>
+        <file>GameSelectPopup.qml</file>
+        <file>res/globe.png</file>
+        <file>res/sandbox.png</file>
     </qresource>
 </RCC>

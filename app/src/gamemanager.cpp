@@ -6,6 +6,11 @@ GameManager::GameManager(QObject *parent)
 
 }
 
+void GameManager::findOnlinePlayers()
+{
+
+}
+
 QList<int> GameManager::getPiecePositions() const
 {
     QList<int> positions;

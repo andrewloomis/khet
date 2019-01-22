@@ -10,7 +10,7 @@ Image {
     source: "res/board.png"
     anchors.centerIn: parent
     z: -1
-
+//    property GameManager gameManager
 
     function getPiece(index)
     {
@@ -59,6 +59,7 @@ Image {
     }
     GameManager {
         id: gameManager
+        objectName: "gameManager"
     }
     Component.onCompleted: {
         BeamMapper.init(root)

@@ -87,10 +87,21 @@ Popup {
 
         RoundButton {
             id: button
+            property color backgroundColor: "white"
+
             width: parent.width/2
             anchors.horizontalCenter: parent.horizontalCenter
             text: "Done"
-            font.pixelSize: 40
+            contentItem: Text {
+                id: buttonText
+                text: parent.text
+//                color: parent.textColor
+                font.pixelSize: 40
+                horizontalAlignment: Text.AlignHCenter
+                verticalAlignment: Text.AlignVCenter
+
+            }
+            clip: true
             onPressed: {
                 if (passwordField.text != confirmPasswordField.text)
                 {
@@ -106,20 +117,55 @@ Popup {
                 else
                 {
                     warningText.visible = false
-                    if (!loginManager.registerUser(usernameField.text, passwordField.text))
+                    loginManager.registerUser(usernameField.text, passwordField.text)
+                    state = "waiting"
+                }
+                passwordField.text = ""
+                confirmPasswordField.text = ""
+            }
+            states: State {
+                name: "waiting"
+                PropertyChanges {
+                    target: button
+                    backgroundColor: "blue"
+                }
+                StateChangeScript {
+                    script: {
+                        waitTimer.start()
+                    }
+                }
+            }
+            transitions: Transition {
+                ColorAnimation {
+                    duration: 1500
+                }
+            }
+
+            Timer {
+                id: waitTimer
+                interval: 1500
+                onTriggered: {
+                    parent.state = ""
+                    if (!loginManager.isLoggedIn())
                     {
                         warningText.text = "username already taken!"
                         warningText.visible = true
                         usernameField.text = ""
                     }
                     else {
+                        usernameField.text = ""
                         root.close()
                     }
                 }
-                passwordField.text = ""
-                confirmPasswordField.text = ""
+            }
+
+            background: Rectangle {
+                radius: parent.radius
+                color: parent.backgroundColor
+//                opacity: 0.7
             }
         }
+
 
     }
 

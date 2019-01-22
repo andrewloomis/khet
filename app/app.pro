@@ -16,14 +16,17 @@ SOURCES += \
         src/main.cpp \
     src/networkmanager.cpp \
     src/gamemanager.cpp \
-    src/loginmanager.cpp
+    src/loginmanager.cpp \
+    src/matchmaker.cpp
 
 HEADERS += \
     inc/networkmanager.h \
     inc/gamemanager.h \
-    inc/loginmanager.h
+    inc/loginmanager.h \
+    inc/matchmaker.h
 
 RESOURCES += qml/qml.qrc
+INCLUDEPATH += inc/
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -35,9 +38,6 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
-INCLUDEPATH += inc/ cryptopp800/include/
-LIBS += -L$$PWD/cryptopp800/lib -lcryptopp
 
 win32:CONFIG(release, debug|release): LIBS += -L$$OUT_PWD/../khetlib/release/ -lkhetlib
 else:win32:CONFIG(debug, debug|release): LIBS += -L$$OUT_PWD/../khetlib/debug/ -lkhetlib
