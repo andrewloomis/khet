@@ -31,5 +31,7 @@
         <file>GameSelectPopup.qml</file>
         <file>res/globe.png</file>
         <file>res/sandbox.png</file>
+        <file>LaserButton.qml</file>
+        <file>res/mainmenuimage.png</file>
     </qresource>
 </RCC>

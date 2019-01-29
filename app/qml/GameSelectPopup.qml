@@ -29,8 +29,11 @@ Popup {
                 }
             }
             onPressed: {
-                matchMakerPopup.open()
-                root.close()
+                if (mainMenu.isLoggedIn())
+                {
+                    matchMakerPopup.open()
+                    root.close()
+                }
             }
         }
         RoundButton {

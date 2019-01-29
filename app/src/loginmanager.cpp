@@ -24,9 +24,9 @@ void LoginManager::logout()
     if (player->isLoggedIn())
     {
         qDebug() << "Logging out";
-        player->logout();
         QJsonObject data;
         data["user"] = player->getUsername();
+        player->logout();
         network->sendRequest(NetworkManager::Request::Logout, data);
     }
 }
@@ -61,7 +61,6 @@ void LoginManager::saltReceived(QString username, QString salt, bool result)
         QJsonObject data;
         data["user"] = username;
         data["hash"] = hash(salt, tempPassword);
-    //    qDebug() << "Salt:" << salt << '\n' << "hash:" << hash;
         network->sendRequest(NetworkManager::Request::Login, data);
     }
 }
@@ -79,9 +78,15 @@ QString LoginManager::generateSalt()
 
 QString LoginManager::hash(QString salt, QString password)
 {
-    auto hash = QCryptographicHash(QCryptographicHash::Sha256).hash(salt.toLocal8Bit() +
-                              password.toLocal8Bit(), QCryptographicHash::Sha256).toHex();
-    return QString(hash);
+    auto crypto = QCryptographicHash(QCryptographicHash::Sha512);
+    auto hash = crypto.hash(salt.toLocal8Bit() +
+                              password.toLocal8Bit(), QCryptographicHash::Sha512);
+    for (int i = 0; i < 300000; i++)
+    {
+        hash = crypto.hash(salt.toLocal8Bit() + hash, QCryptographicHash::Sha512);
+    }
+    auto finalHash = hash.toHex();
+    return QString(finalHash);
 }
 
 void LoginManager::registerUser(QString username, QString password)
@@ -93,7 +98,6 @@ void LoginManager::registerUser(QString username, QString password)
     data["user"] = username;
     data["salt"] = salt;
     data["hash"] = hashStr;
-//    qDebug() << "Salt:" << salt << '\n' << "hash:" << hash;
     network->sendRequest(NetworkManager::Request::SignUp, data);
 }
 

@@ -117,12 +117,22 @@ Popup {
                 else
                 {
                     warningText.visible = false
-                    loginManager.registerUser(usernameField.text, passwordField.text)
                     state = "waiting"
+                    loginManager.registerUser(usernameField.text, passwordField.text)
                 }
                 passwordField.text = ""
                 confirmPasswordField.text = ""
             }
+            onHoveredChanged: {
+                if (hovered)
+                {
+                    button.backgroundColor = "lightblue"
+                }
+                else {
+                    button.backgroundColor = "white"
+                }
+            }
+
             states: State {
                 name: "waiting"
                 PropertyChanges {

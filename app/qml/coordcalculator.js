@@ -49,7 +49,8 @@ function beamPartCoords(x1, y1, x2, y2, termination)
                 beamTopMargin = isDirectionPositive(y1, y2) ? (boardWallWidth + y1*spaceDistance + spaceDistance/2) :
                                                               (boardWallWidth + y2*spaceDistance + spaceDistance/2)
             }
-            if(x1 === 9 && y1 === 7) beamHeight += spaceDistance/2
+            if((x1 === 9 && y1 === 7) || (x1 === 0 && y1 === 0)) beamHeight += spaceDistance/2
+            if (x1 === 0 && y1 === 0) beamTopMargin -= spaceDistance/2
             beamLeftMargin = boardWallWidth + x1*spaceDistance + (spaceDistance - beamWidth)/2
         }
     }
@@ -82,20 +83,6 @@ function beamPartCoords(x1, y1, x2, y2, termination)
             }
             beamTopMargin = boardWallWidth + y1*spaceDistance + (spaceDistance - beamHeight)/2
         }
-//        beamHeight = 10
-//        // Hits wall
-//        if (termination === 0)
-//        {
-//            beamWidth = Math.abs(x2 - x1)*spaceDistance + spaceDistance/2
-//            beamLeftMargin = boardWallWidth
-//        }
-//        // Hits piece
-//        else
-//        {
-//            beamWidth = Math.abs(x2 - x1)*spaceDistance
-//            beamLeftMargin = boardWallWidth + x2*spaceDistance + spaceDistance/2
-//        }
-//        beamTopMargin = boardWallWidth + y1*spaceDistance + (spaceDistance - beamHeight)/2
     }
     isBeamVertical = !isBeamVertical;
 }

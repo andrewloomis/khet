@@ -84,6 +84,15 @@ Popup {
                 state = "waiting"
                 passwordField.text = ""
             }
+            onHoveredChanged: {
+                if (hovered)
+                {
+                    button.backgroundColor = "lightblue"
+                }
+                else {
+                    button.backgroundColor = "white"
+                }
+            }
             states: State {
                 name: "waiting"
                 PropertyChanges {

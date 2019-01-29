@@ -6,44 +6,82 @@ import khet.gamemanager 1.0
 
 Image {
     id: root
+    focus: true
     fillMode: Image.PreserveAspectFit
     source: "res/board.png"
-    anchors.centerIn: parent
     z: -1
-//    property GameManager gameManager
+    property GameManager gameManager
 
     function getPiece(index)
     {
         return GameLoader.getPiece(index)
     }
+    function killPiece(index)
+    {
+        GameLoader.killPiece(index)
+    }
+    function unstackPiece(index, color)
+    {
+        GameLoader.unstackPiece(index, color)
+    }
+    function reset()
+    {
+        GameLoader.loadGame(gameManager.getPiecePositions())
+    }
+
+    Timer {
+        id: beamDestroyTimer
+        interval: 1000
+        onTriggered: {
+            BeamMapper.destroyBeam()
+        }
+    }
+
+    function createOpponentBeam()
+    {
+        if (gameManager.myColor === "red")
+        {
+            BeamMapper.createBeam(gameManager.getBeamCoords(9,7), 9, 7)
+        }
+        else
+        {
+            BeamMapper.createBeam(gameManager.getBeamCoords(0,0), 0, 0)
+        }
+
+        beamDestroyTimer.start()
+    }
 
     Button {
-        id: button
+        id: greyPlayerButton
+        enabled: gameManager.myColor == "grey"
         width: 35
         height: width
         anchors.right: parent.right
         anchors.bottom: parent.bottom
         anchors.rightMargin: 85
         anchors.bottomMargin: 10
+
         property bool beamCreated: false
         background: Rectangle {
-            id: rect
+            id: greyPlayerButton_rect
             anchors.fill: parent
             radius: width/2
             color: "red"
         }
         onPressed: {
-            if (gameManager.isGodMode() || gameManager.isPlayerTurn())
+            if (gameManager.mode == "sandbox" ||
+                    (gameManager.isPlayerTurn() && gameManager.isMoveComplete()))
             {
-                BeamMapper.createBeam(gameManager.getBeamCoords())
+                greyPlayerButton_rect.color = "#4F0000"
+                BeamMapper.createBeam(gameManager.getBeamCoords(9,7), 9, 7)
                 beamCreated = true
+                gameManager.turnFinished()
             }
-            rect.color = "#4F0000"
         }
         onHoveredChanged: {
             if(beamCreated) {
                 BeamMapper.destroyBeam()
-                rect.color = "red"
+                greyPlayerButton_rect.color = "red"
                 beamCreated = false
             }
         }
@@ -51,16 +89,55 @@ Image {
         onReleased: {
             if(beamCreated) {
                 BeamMapper.destroyBeam()
-                rect.color = "red"
+                greyPlayerButton_rect.color = "red"
+                beamCreated = false
+            }
+        }
+    }
+
+    Button {
+        id: redPlayerButton
+        enabled: gameManager.myColor == "red"
+        width: 35
+        height: width
+        anchors.left: parent.left
+        anchors.top: parent.top
+        anchors.leftMargin: 85
+        anchors.topMargin: 10
+        property bool beamCreated: false
+        background: Rectangle {
+            id: redPlayerButton_rect
+            anchors.fill: parent
+            radius: width/2
+            color: "red"
+        }
+        onPressed: {
+            if (gameManager.mode == "sandbox" ||
+                    (gameManager.isPlayerTurn() && gameManager.isMoveComplete()))
+            {
+                redPlayerButton_rect.color = "#4F0000"
+                BeamMapper.createBeam(gameManager.getBeamCoords(0,0), 0, 0)
+                beamCreated = true
+                gameManager.turnFinished()
+            }
+        }
+        onHoveredChanged: {
+            if(beamCreated) {
+                BeamMapper.destroyBeam()
+                redPlayerButton_rect.color = "red"
                 beamCreated = false
             }
         }
 
+        onReleased: {
+            if(beamCreated) {
+                BeamMapper.destroyBeam()
+                redPlayerButton_rect.color = "red"
+                beamCreated = false
+            }
+        }
     }
-    GameManager {
-        id: gameManager
-        objectName: "gameManager"
-    }
+
     Component.onCompleted: {
         BeamMapper.init(root)
         GameLoader.init(root, gameManager)

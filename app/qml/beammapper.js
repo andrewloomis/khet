@@ -10,7 +10,7 @@ function init(parent)
     board = parent
 }
 
-function createBeam(coords)
+function createBeam(coords, startX, startY)
 {
     for (var i = 0; i < coords.length; i+=3)
     {
@@ -22,9 +22,9 @@ function createBeam(coords)
             beamPart.anchors.top = board.top
             if (i == 0)
             {
-                console.log("creating beam from 9,7 to", coords[i], ",", coords[i+1],
+                console.log("creating beam from", startX, ",", startY, "to", coords[i], ",", coords[i+1],
                             "hitting", coords[i+2] === 0 ? "wall" : "a piece")
-                CoordCalculator.beamPartCoords(9,7, coords[i], coords[i+1], coords[i+2])
+                CoordCalculator.beamPartCoords(startX,startY, coords[i], coords[i+1], coords[i+2])
             }
             else
             {
@@ -44,7 +44,6 @@ function createBeam(coords)
     }
     CoordCalculator.resetBeamDirection()
 }
-
 
 function destroyBeam()
 {

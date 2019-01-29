@@ -19,13 +19,33 @@ function getPiece(index)
     return pieces[index]
 }
 
+function killPiece(index)
+{
+    var piece = pieces[index]
+    piece.visible = false
+}
+
+function unstackPiece(index, color)
+{
+    var stackedPiece = pieces[index]
+    stackedPiece.imageSource = color === "red" ?
+                "res/red-obelisk.png" : "res/grey-obelisk.png"
+}
+
 function loadGame(pieceLayout) {
+    pieces.forEach(destroyPiece)
+    pieces = []
     var packetSize = 5;
     for (var i = 0; i < pieceLayout.length; i+=packetSize)
     {
         makePiece([pieceLayout[i], pieceLayout[i+1], pieceLayout[i+2]],
                   pieceLayout[i+3], pieceLayout[i+4], i/packetSize)
     }
+}
+
+function destroyPiece(piece)
+{
+    piece.destroy()
 }
 
 function makePiece(piecePosition, type, color, index)

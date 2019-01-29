@@ -2,6 +2,7 @@ import QtQuick 2.9
 import QtQuick.Controls 2.4
 
 ApplicationWindow {
+    id: appWindow
     visible: true
     width: 1920
     height: 1080
@@ -19,6 +20,5 @@ ApplicationWindow {
             id: mainMenu
             anchors.fill: parent
         }
-
     }
 }

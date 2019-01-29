@@ -30,7 +30,6 @@ Item {
         console.log("piece ", index, " moved to ", xPos, ",", yPos)
         gameManager.updatePiecePosition(index, xPos, yPos);
         state = "nonhighlighted"
-        gameManager.turnFinished()
     }
 
     id: piece
@@ -111,8 +110,11 @@ Item {
     MouseArea {
         anchors.fill: piece
         onClicked: {
-            if (gameManager.isGodMode() || (gameManager.getPieceColor(index) === gameManager.getMyColor() &&
-                    gameManager.isPlayerTurn()))
+//            console.log("My color:", gameManager.myColor)
+//            console.log("Piece color:", gameManager.getPieceColor(index))
+            console.log("my turn:", gameManager.isPlayerTurn())
+            if (gameManager.mode === "sandbox" || (gameManager.getPieceColor(index) === gameManager.myColor &&
+                    gameManager.isPlayerTurn() && !gameManager.isMoveComplete()))
             {
                 if (piece.state == "highlighted")
                 {
@@ -185,11 +187,6 @@ Item {
             targets: [cwArrow, ccwArrow, highlightRect]
         }
     }
-
-//    Connections {
-//        id: gameManager
-
-//    }
 
     Component.onCompleted: {
         CircleController.init(piece)
