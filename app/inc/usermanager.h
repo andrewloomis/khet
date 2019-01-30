@@ -7,28 +7,31 @@
 #include "networkmanager.h"
 #include "khetlib/player.h"
 #include <memory>
-class LoginManager : public QObject
+class UserManager : public QObject
 {
     Q_OBJECT
     Q_PROPERTY(QString username READ getUsername)
 
 public:
-    LoginManager();
+    UserManager();
     Q_INVOKABLE void registerUser(QString username, QString password);
     Q_INVOKABLE void loginUser(QString username, QString password);
     Q_INVOKABLE void logout();
     Q_INVOKABLE bool isLoggedIn() const { return player->isLoggedIn(); }
     void addNetworkManager(std::shared_ptr<NetworkManager> nm);
     void addPlayer(std::shared_ptr<Player> p) { player = p; }
+    Q_INVOKABLE void getRankings();
 
 signals:
     void loggedIn();
     void userDoesNotExist();
+    void rankingsReceived(QList<QString> rankings);
 
 private slots:
     void signUpReply(QString username, bool result);
     void loginReply(QString username, bool result);
     void saltReceived(QString username, QString salt, bool result);
+    void rankingsObjReceived(QJsonObject rankings);
 
 private:
     QString getUsername() const { return player ? player->getUsername() : "Unknown"; }

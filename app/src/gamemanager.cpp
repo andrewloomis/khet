@@ -41,10 +41,15 @@ void GameManager::pharoahKilled(int index)
     QString winner = game.getPieceColor(static_cast<size_t>(index)) ==
             Color::Red ? "grey" : "red";
     emit endGame(winner);
-    QJsonObject data;
-    data["user"] = me->getUsername();
-    data["opponent"] = opponent.getUsername();
-    data["winner"] = winner;
+    // Only one player can send game over request
+    if (me->pieceColor() == game.getPieceColor(static_cast<size_t>(index)))
+    {
+        QJsonObject data;
+        data["user"] = me->getUsername();
+        data["opponent"] = opponent.getUsername();
+        data["winner"] = winner;
+        network->sendRequest(NetworkManager::Request::GameOver, data);
+    }
 }
 
 void GameManager::setPlayerColor(QString color)

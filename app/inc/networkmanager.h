@@ -23,7 +23,8 @@ public:
         OnlinePlayerQuery,
         GameRequest,
         TurnComplete,
-        GameOver
+        GameOver,
+        Rankings
     };
     enum class Reply
     {
@@ -50,6 +51,7 @@ signals:
     void setColorReceived(QString color);
     void opponentMoved(int index, int angle, int xPos, int yPos);
     void endGameReceived(QString winner);
+    void rankingsReceived(QJsonObject);
 
 private slots:
     void onConnected();

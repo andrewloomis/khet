@@ -62,7 +62,6 @@ Popup {
         height: parent.height/8
         transformOrigin: Qt.TopLeftCorner
         topMargin: 20
-//        y: 20
         padding: 0
 
         enter: Transition {
@@ -82,7 +81,7 @@ Popup {
             Text {
                 text: "New game invite from " + invitePopup.opponent + "?"
                 font.pixelSize: 50
-                color: "#605060"
+                color: "white"
                 width: parent.width
                 height: 100
                 horizontalAlignment: Text.AlignHCenter

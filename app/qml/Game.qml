@@ -11,6 +11,10 @@ Page {
         redStats.obelisksKilled = 0
         greyStats.pyramidsKilled = 0
         greyStats.obelisksKilled = 0
+        greyPanelText.text = ""
+        redPanelText.text = ""
+        titleText.text = ""
+        gameManager.lastOpponentPiece.stopHighlightAnimation()
         gameManager.reset()
         board.reset()
     }
@@ -34,12 +38,7 @@ Page {
             }
 
             Text {
-                id: titleTe//    onActiveFocusChanged: {
-                //        if (root.activeFocus)
-                //        {
-                //            GameLoader.loadGame(gameManager.getPiecePositions())
-                //        }
-                //    }xt
+                id: titleText
                 anchors.centerIn: parent
                 text: ""
                 font.pixelSize: 70
@@ -185,6 +184,13 @@ Page {
     GameManager {
         id: gameManager
         objectName: "gameManager"
+        property Piece lastOpponentPiece
+
+        function stopHighlightAnimation() {
+            lastOpponentPiece.stopHighlightAnimation()
+            lastOpponentPiece = undefined
+        }
+
         onPieceKilled: {
             board.killPiece(index)
             switch(type)
@@ -222,9 +228,16 @@ Page {
         }
         onOpponentPieceMoved: {
             var piece = board.getPiece(index)
+            piece.startHighlightAnimation()
             piece.updatePosition(xPos, yPos)
-            if (piece.angle !== angle) piece.angle = angle
+            if (piece.angle !== angle) {
+                piece.rotDir = (angle > piece.angle) ? "CW" : "CCW"
+                piece.angle = angle
+                gameManager.updatePieceAngle(index, angle)
+                console.log("piece", index, "rotating CW to", angle, "degrees")
+            }
             board.createOpponentBeam()
+            lastOpponentPiece = piece
         }
         onEndGame: {
             console.log("endgame")

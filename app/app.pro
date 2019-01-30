@@ -16,14 +16,14 @@ SOURCES += \
         src/main.cpp \
     src/networkmanager.cpp \
     src/gamemanager.cpp \
-    src/loginmanager.cpp \
-    src/matchmaker.cpp
+    src/matchmaker.cpp \
+    src/usermanager.cpp
 
 HEADERS += \
     inc/networkmanager.h \
     inc/gamemanager.h \
-    inc/loginmanager.h \
-    inc/matchmaker.h
+    inc/matchmaker.h \
+    inc/usermanager.h
 
 RESOURCES += qml/qml.qrc
 INCLUDEPATH += inc/

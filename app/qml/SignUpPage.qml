@@ -1,12 +1,12 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-import khet.loginmanager 1.0
+import khet.usermanager 1.0
 Popup {
     id: root
     dim: true
     height: column.childrenRect.height + 70
-    property LoginManager loginManager
+    property UserManager userManager
     Column {
         id: column
         anchors.fill: parent
@@ -118,7 +118,7 @@ Popup {
                 {
                     warningText.visible = false
                     state = "waiting"
-                    loginManager.registerUser(usernameField.text, passwordField.text)
+                    userManager.registerUser(usernameField.text, passwordField.text)
                 }
                 passwordField.text = ""
                 confirmPasswordField.text = ""
@@ -156,7 +156,7 @@ Popup {
                 interval: 1500
                 onTriggered: {
                     parent.state = ""
-                    if (!loginManager.isLoggedIn())
+                    if (!userManager.isLoggedIn())
                     {
                         warningText.text = "username already taken!"
                         warningText.visible = true

@@ -76,6 +76,7 @@ Image {
                 BeamMapper.createBeam(gameManager.getBeamCoords(9,7), 9, 7)
                 beamCreated = true
                 gameManager.turnFinished()
+                gameManager.stopHighlightAnimation()
             }
         }
         onHoveredChanged: {
@@ -119,6 +120,7 @@ Image {
                 BeamMapper.createBeam(gameManager.getBeamCoords(0,0), 0, 0)
                 beamCreated = true
                 gameManager.turnFinished()
+                gameManager.stopHighlightAnimation()
             }
         }
         onHoveredChanged: {

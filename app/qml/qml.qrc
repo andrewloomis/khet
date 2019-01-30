@@ -33,5 +33,6 @@
         <file>res/sandbox.png</file>
         <file>LaserButton.qml</file>
         <file>res/mainmenuimage.png</file>
+        <file>RankingsPopup.qml</file>
     </qresource>
 </RCC>

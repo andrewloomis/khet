@@ -32,7 +32,7 @@ void NetworkManager::onConnected()
 
 void NetworkManager::onBinaryMessageReceived(QByteArray message)
 {
-//    qDebug() << "Message received:" << message;
+    qDebug() << "Message received:" << message;
     QJsonObject msg = QJsonDocument::fromJson(message).object();
     auto user = msg.value("user").toString();
     if (msg.value("response") == "signup")
@@ -68,6 +68,10 @@ void NetworkManager::onBinaryMessageReceived(QByteArray message)
         {
             emit gameRequestApproved(msg.value("opponent").toString());
         }
+    }
+    else if (msg.value("response") == "rankings")
+    {
+        emit rankingsReceived(msg.value("rankings").toObject());
     }
     else if (msg.value("request") == "game_invite")
     {
@@ -156,6 +160,9 @@ void NetworkManager::sendRequest(const Request& req, const QJsonObject& data)
     case Request::GameOver:
         request["request"] = "game_over";
         request["data"] = data;
+        break;
+    case Request::Rankings:
+        request["request"] = "rankings";
     }
     auto message = QJsonDocument(request).toJson();
     if (isConnected())

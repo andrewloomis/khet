@@ -31,6 +31,35 @@ Item {
         gameManager.updatePiecePosition(index, xPos, yPos);
         state = "nonhighlighted"
     }
+    Timer {
+        id: highlightOff;
+        interval: 1200;
+        onTriggered: {
+            highlightRect.opacity = 0;
+            highlightOn.start()
+        }
+    }
+
+    Timer {
+        id: highlightOn;
+        interval: 1200;
+        onTriggered: {
+            highlightRect.opacity = 0.7;
+            highlightOff.start();
+        }
+    }
+
+    function startHighlightAnimation()
+    {
+        highlightRect.opacity = 0.7
+        highlightOff.start()
+    }
+    function stopHighlightAnimation()
+    {
+        highlightOn.stop()
+        highlightOff.stop()
+        highlightRect.opacity = 0;
+    }
 
     id: piece
     width: interiorSpaceWidth
@@ -60,7 +89,14 @@ Item {
         color: "green"
         opacity: 0
         z: 1
+
+        Behavior on opacity {
+            NumberAnimation {
+                duration: 1000
+            }
+        }
     }
+
     Image {
         id: cwArrow
         property bool clickEnabled: false

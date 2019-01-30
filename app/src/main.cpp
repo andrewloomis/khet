@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "gamemanager.h"
-#include "loginmanager.h"
+#include "usermanager.h"
 #include "matchmaker.h"
 #include "networkmanager.h"
 #include <memory>
@@ -14,7 +14,7 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     qmlRegisterType<GameManager>("khet.gamemanager", 1, 0, "GameManager");
-    qmlRegisterType<LoginManager>("khet.loginmanager", 1, 0, "LoginManager");
+    qmlRegisterType<UserManager>("khet.usermanager", 1, 0, "UserManager");
     qmlRegisterType<MatchMaker>("khet.matchmaker", 1, 0, "MatchMaker");
 
     QQmlApplicationEngine engine;
@@ -26,13 +26,13 @@ int main(int argc, char *argv[])
     auto gameManager = root->findChild<GameManager*>("gameManager");
     gameManager->addNetworkManager(nm);
     gameManager->addPlayer(player);
-    auto loginManager = root->findChild<LoginManager*>("loginManager");
-    loginManager->addNetworkManager(nm);
-    loginManager->addPlayer(player);
+    auto userManager = root->findChild<UserManager*>("userManager");
+    userManager->addNetworkManager(nm);
+    userManager->addPlayer(player);
     auto matchMaker = root->findChild<MatchMaker*>("matchMaker");
     matchMaker->addNetworkManager(nm);
     matchMaker->addPlayer(player);
-    QObject::connect(&app, &QGuiApplication::aboutToQuit, loginManager, &LoginManager::logout);
+    QObject::connect(&app, &QGuiApplication::aboutToQuit, userManager, &UserManager::logout);
 
     if (engine.rootObjects().isEmpty())
         return -1;

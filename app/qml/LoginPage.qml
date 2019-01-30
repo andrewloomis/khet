@@ -1,13 +1,13 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
-import khet.loginmanager 1.0
+import khet.usermanager 1.0
 
 Popup {
     id: root
     dim: true
     height: column.childrenRect.height + 70
-    property LoginManager loginManager
+    property UserManager userManager
     Column {
         id: column
         anchors.fill: parent
@@ -80,7 +80,7 @@ Popup {
             clip: true
             onPressed: {
                 warningText.visible = false
-                loginManager.loginUser(usernameField.text, passwordField.text)
+                userManager.loginUser(usernameField.text, passwordField.text)
                 state = "waiting"
                 passwordField.text = ""
             }
@@ -116,7 +116,7 @@ Popup {
                 interval: 1500
                 onTriggered: {
                     parent.state = ""
-                    if (!loginManager.isLoggedIn())
+                    if (!userManager.isLoggedIn())
                     {
                         warningText.text = "username/password invalid"
                         warningText.visible = true
