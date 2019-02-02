@@ -1,6 +1,7 @@
-var spaceDistance = 97
-var boardWallWidth = 73
+var spaceDistance = 97/2
+var boardWallWidth = 73/2
 
+var beamDia = 10/2
 var beamWidth = 0
 var beamHeight = 0
 var beamLeftMargin = 0
@@ -24,7 +25,7 @@ function beamPartCoords(x1, y1, x2, y2, termination)
 {
     if (isBeamVertical)
     {
-        beamWidth = 10
+        beamWidth = beamDia
         // Piece on edge reflects beam vertical, hitting wall
         if (y1 === y2 && termination === 0)
         {
@@ -56,7 +57,7 @@ function beamPartCoords(x1, y1, x2, y2, termination)
     }
     else
     {
-        beamHeight = 10
+        beamHeight = beamDia
         // Piece on edge reflects beam vertical, hitting wall
         if (x1 === x2 && termination === 0)
         {

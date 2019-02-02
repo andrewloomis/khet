@@ -5,14 +5,14 @@ Item {
     property int location: 0
 
     id: root
-    width: 90
-    height: 90
-    anchors.margins: 10
+    width: 90/2
+    height: 90/2
+    anchors.margins: 10/2
     Image {
         source: "res/circle.png"
         anchors.centerIn: parent
-        width: 45
-        height: 45
+        width: 45/2
+        height: 45/2
     }
     MouseArea {
         anchors.fill: parent

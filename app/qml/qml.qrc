@@ -34,5 +34,6 @@
         <file>LaserButton.qml</file>
         <file>res/mainmenuimage.png</file>
         <file>RankingsPopup.qml</file>
+        <file>res/board-small.png</file>
     </qresource>
 </RCC>

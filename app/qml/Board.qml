@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
+import QtQuick.Window 2.12
 import "gameloader.js" as GameLoader
 import "beammapper.js" as BeamMapper
 import khet.gamemanager 1.0
@@ -9,7 +10,10 @@ Image {
     focus: true
     fillMode: Image.PreserveAspectFit
     source: "res/board.png"
+    sourceSize.width: 555
+    sourceSize.height: 457
     z: -1
+
     property GameManager gameManager
 
     function getPiece(index)
@@ -54,12 +58,12 @@ Image {
     Button {
         id: greyPlayerButton
         enabled: gameManager.myColor == "grey"
-        width: 35
+        width: 35/2
         height: width
         anchors.right: parent.right
         anchors.bottom: parent.bottom
-        anchors.rightMargin: 85
-        anchors.bottomMargin: 10
+        anchors.rightMargin: 85/2
+        anchors.bottomMargin: 10/2
 
         property bool beamCreated: false
         background: Rectangle {
@@ -99,12 +103,12 @@ Image {
     Button {
         id: redPlayerButton
         enabled: gameManager.myColor == "red"
-        width: 35
+        width: 35/2
         height: width
         anchors.left: parent.left
         anchors.top: parent.top
-        anchors.leftMargin: 85
-        anchors.topMargin: 10
+        anchors.leftMargin: 85/2
+        anchors.topMargin: 10/2
         property bool beamCreated: false
         background: Rectangle {
             id: redPlayerButton_rect

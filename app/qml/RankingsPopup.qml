@@ -7,15 +7,17 @@ import khet.usermanager 1.0
 Popup {
     id: root
     property UserManager userManager
+    property real scaleRatio
 
     dim: true
-    height: parent.height/2
-    width: parent.width/2
+    height: 3*parent.height/4
+    width: 3*parent.width/4
+
     Rectangle {
         id: rect
         anchors.fill: parent
-        anchors.margins: 10
-        radius: 20
+        anchors.margins: 10 * root.scaleRatio
+        radius: 20 * root.scaleRatio
         color: "#605060"
         ColumnLayout {
             anchors.fill: parent
@@ -26,15 +28,15 @@ Popup {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
                 Layout.fillWidth: true
-                Layout.topMargin: 20
-                Layout.bottomMargin: 20
-                font.pixelSize: 50
+                Layout.topMargin: 20 * root.scaleRatio
+                Layout.bottomMargin: 20 * root.scaleRatio
+                font.pixelSize: 50 * root.scaleRatio
             }
             Rectangle {
-                implicitWidth: parent.width - 40
-                implicitHeight: 50
+                implicitWidth: parent.width - 40 * root.scaleRatio
+                implicitHeight: 50 * root.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
-                radius: 5
+                radius: 5 * root.scaleRatio
                 RowLayout {
                     anchors.fill: parent
                     Text {
@@ -42,7 +44,7 @@ Popup {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         text: "Users"
-                        font.pixelSize: 40
+                        font.pixelSize: 40 * root.scaleRatio
                         color: "darkred"
                     }
                     Text {
@@ -50,7 +52,7 @@ Popup {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         text: "Wins"
-                        font.pixelSize: 40
+                        font.pixelSize: 40 * root.scaleRatio
                         color: "darkred"
                     }
                     Text {
@@ -58,7 +60,7 @@ Popup {
                         verticalAlignment: Text.AlignVCenter
                         horizontalAlignment: Text.AlignHCenter
                         text: "Losses"
-                        font.pixelSize: 40
+                        font.pixelSize: 40 * root.scaleRatio
                         color: "darkred"
                     }
                 }
@@ -66,17 +68,18 @@ Popup {
 
 
             TableView {
+                id: table
                 Layout.fillHeight: true
                 Layout.alignment: Qt.AlignHCenter
-                Layout.preferredWidth: parent.width - 40
+                Layout.preferredWidth: parent.width - (40 * root.scaleRatio)
                 clip: true
                 rowSpacing: 2
 
                 model: rankingsModel
                 delegate: Rectangle {
-                    implicitWidth: parent.width
-                    implicitHeight: 50
-                    radius: 5
+                    implicitWidth: rect.width - (40 * root.scaleRatio)
+                    implicitHeight: 50 * root.scaleRatio
+                    radius: 5 * root.scaleRatio
                     RowLayout {
                         anchors.fill: parent
                         Text {
@@ -84,21 +87,21 @@ Popup {
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
                             text: user
-                            font.pixelSize: 40
+                            font.pixelSize: 40 * root.scaleRatio
                         }
                         Text {
                             Layout.preferredWidth: parent.width/3
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
                             text: wins
-                            font.pixelSize: 40
+                            font.pixelSize: 40 * root.scaleRatio
                         }
                         Text {
                             Layout.preferredWidth: parent.width/3
                             verticalAlignment: Text.AlignVCenter
                             horizontalAlignment: Text.AlignHCenter
                             text: losses
-                            font.pixelSize: 40
+                            font.pixelSize: 40 * root.scaleRatio
                         }
                     }
                 }
@@ -108,6 +111,9 @@ Popup {
 
     ListModel {
         id: rankingsModel
+    }
+    onScaleRatioChanged: {
+        table.forceLayout()
     }
 
     function updateRankings(list)
@@ -126,6 +132,6 @@ Popup {
     background: Rectangle {
         anchors.fill: parent
         color: "lightgrey"
-        radius: 20
+        radius: 20 * root.scaleRatio
     }
 }

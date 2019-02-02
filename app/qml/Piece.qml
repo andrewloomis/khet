@@ -11,7 +11,7 @@ Item {
     property int yPos: 5
     property int angle
     property string rotDir: "CW"
-    property int interiorSpaceWidth: 90
+    property int interiorSpaceWidth: 90/2
     property string imageSource: ""
 
     function updatePosition(newX, newY) {
@@ -74,6 +74,7 @@ Item {
         source: imageSource
         fillMode: Image.PreserveAspectFit
         rotation: angle
+        width: 45
         Behavior on rotation {
             RotationAnimation {
                 duration: 500
@@ -84,8 +85,8 @@ Item {
     Rectangle {
         id: highlightRect
         anchors.fill: piece
-        anchors.margins: 10
-        radius: 20
+        anchors.margins: 10/2
+        radius: 20/2
         color: "green"
         opacity: 0
         z: 1
@@ -102,10 +103,10 @@ Item {
         property bool clickEnabled: false
         source: "res/cwarrow.png"
         fillMode: Image.PreserveAspectFit
-        width: 60
+        width: 60/2
         anchors.top: piece.bottom
         anchors.right: piece.left
-        anchors.margins: -30
+        anchors.margins: -30/2
         opacity: 0
         z: 1
         MouseArea {
@@ -125,10 +126,10 @@ Item {
         property bool clickEnabled: false
         source: "res/ccwarrow.png"
         fillMode: Image.PreserveAspectFit
-        width: 60
+        width: 60/2
         anchors.bottom: piece.top
         anchors.left: piece.right
-        anchors.margins: -30
+        anchors.margins: -30/2
         opacity: 0
         z: 1
         MouseArea {

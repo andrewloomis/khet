@@ -5,32 +5,47 @@ import khet.usermanager 1.0
 
 Page {
     Rectangle {
+        id: background
+        property int preferredHeight: 800
+        property int preferredWidth: 600
+//        property real scaleRatio: Math.min(column.height/background.preferredHeight,
+//                                           column.width/background.preferredWidth)
+        property real scaleRatio: Math.min(appWindow.width/preferredWidth,
+                                           appWindow.height/preferredHeight) * 0.8;
         color: "lightgrey"
         opacity: 0.9
         radius: 30
         anchors.centerIn: parent
-        width: parent.width /3
-        height: parent.height*0.8
+//        width: appWindow.width > background.preferredWidth ?
+//                   background.preferredWidth : appWindow.width - 30
+//        height: appWindow.height > background.preferredHeight ?
+//                    background.preferredHeight : appWindow.height - 30
+
+        width: preferredWidth * scaleRatio
+        height: preferredHeight * scaleRatio
 
         ColumnLayout {
             id: column
-            anchors.margins: 30
+            anchors.margins: 30 * background.scaleRatio
             anchors.fill: parent
-            spacing: 20
+            spacing: 20 * background.scaleRatio
+            clip: true
             Text {
                 id: title
                 text: qsTr("Khet")
+                font.family: "Ubuntu"
                 horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 70
+                font.pointSize: 70 * background.scaleRatio
                 width: parent.width
                 Layout.alignment: Qt.AlignHCenter
             }
             RoundButton {
                 text: "Play"
-                font.pointSize: 50
+                font.family: "Ubuntu"
+                font.pointSize: 50 * background.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
                 radius: 10
-                padding: 20
+                padding: 20 * background.scaleRatio
                 onHoveredChanged: {
                     if(hovered)
                     {
@@ -46,10 +61,11 @@ Page {
             }
             RoundButton {
                 text: "Log in"
-                font.pointSize: 50
+                font.family: "Ubuntu"
+                font.pointSize: 50 * background.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
                 radius: 10
-                padding: 20
+                padding: 20 * background.scaleRatio
                 onHoveredChanged: {
                     if(hovered)
                     {
@@ -63,10 +79,11 @@ Page {
             }
             RoundButton {
                 text: "Sign Up"
-                font.pointSize: 50
+                font.family: "Ubuntu"
+                font.pointSize: 50 * background.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
                 radius: 10
-                padding: 20
+                padding: 20 * background.scaleRatio
                 onHoveredChanged: {
                     if(hovered)
                     {
@@ -80,10 +97,11 @@ Page {
             }
             RoundButton {
                 text: "Rankings"
-                font.pointSize: 50
+                font.family: "Ubuntu"
+                font.pointSize: 50 * background.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
                 radius: 10
-                padding: 20
+                padding: 20 * background.scaleRatio
                 onHoveredChanged: {
                     if(hovered)
                     {
@@ -98,9 +116,10 @@ Page {
             Text {
                 id: loginText
                 text: "Not logged in"
+                font.family: "Ubuntu"
                 font.italic: true
                 horizontalAlignment: Text.AlignHCenter
-                font.pointSize: 30
+                font.pointSize: 30 * background.scaleRatio
                 width: parent.width
                 color: "grey"
                 Layout.alignment: Qt.AlignHCenter
@@ -108,9 +127,10 @@ Page {
             RoundButton {
                 id: logoutButton
                 visible: false
-                font.pixelSize: 30
+                font.pixelSize: 30 * background.scaleRatio
                 Layout.alignment: Qt.AlignHCenter
                 text: "Logout"
+                font.family: "Ubuntu"
                 onPressed: {
                     visible = false
                     userManager.logout()
@@ -123,27 +143,32 @@ Page {
         id: rankingsPopup
         anchors.centerIn: parent
         userManager: userManager
+        scaleRatio: background.scaleRatio
     }
 
     MatchMakerPopup {
         id: matchMakerPopup
         anchors.centerIn: parent
+        scaleRatio: background.scaleRatio
     }
     GameSelectPopup {
         id: gameSelectPopup
         anchors.centerIn: parent
+        scaleRatio: background.scaleRatio
     }
     SignUpPage {
         id: signUpPage
         anchors.centerIn: parent
-        width: parent.width/2
+        width: 3*parent.width/4
         userManager: userManager
+        scaleRatio: background.scaleRatio
     }
     LoginPage {
         id: loginPage
         anchors.centerIn: parent
         width: parent.width/2
         userManager: userManager
+        scaleRatio: background.scaleRatio
     }
     function isLoggedIn()
     {

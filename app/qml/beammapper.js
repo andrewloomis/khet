@@ -3,7 +3,7 @@
 
 var board
 var beamParts = []
-var spaceDistance = 97
+//var spaceDistance = 97
 
 function init(parent)
 {

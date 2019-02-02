@@ -7,30 +7,32 @@ Popup {
     dim: true
     height: column.childrenRect.height + 70
     property UserManager userManager
+    property real scaleRatio
+
     Column {
         id: column
         anchors.fill: parent
-        anchors.margins: 30
-        spacing: 40
+        anchors.margins: 30 * scaleRatio
+        spacing: 40 * scaleRatio
         Text {
             text: "Sign Up"
             horizontalAlignment: Text.AlignHCenter
             color: "white"
             width: parent.width
-            font.pixelSize: 50
+            font.pixelSize: 50 * scaleRatio
         }
         RowLayout {
             width: parent.width
-            spacing: 50
+            spacing: 50 * scaleRatio
             Text {
                 text: "Username"
-                font.pixelSize: 40
+                font.pixelSize: 40 * scaleRatio
                 color: "black"
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
                 id: usernameField
-                font.pointSize: 40
+                font.pointSize: 40 * scaleRatio
                 color: "grey"
                 clip: true
                 Layout.fillWidth: true
@@ -42,13 +44,13 @@ Popup {
             spacing: 50
             Text {
                 text: "Password"
-                font.pixelSize: 40
+                font.pixelSize: 40 * scaleRatio
                 color: "black"
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
                 id: passwordField
-                font.pointSize: 40
+                font.pointSize: 40 * scaleRatio
                 color: "grey"
                 clip: true
                 Layout.fillWidth: true
@@ -57,16 +59,16 @@ Popup {
         }
         RowLayout {
             width: parent.width
-            spacing: 50
+            spacing: 50 * scaleRatio
             Text {
                 text: "Confirm Password"
-                font.pixelSize: 35
+                font.pixelSize: 35 * scaleRatio
                 color: "black"
                 Layout.preferredWidth: parent.width/3
             }
             TextField {
                 id: confirmPasswordField
-                font.pointSize: 40
+                font.pointSize: 40 * scaleRatio
                 color: "grey"
                 clip: true
                 Layout.fillWidth: true
@@ -78,8 +80,8 @@ Popup {
             id: warningText
             visible: false
             text: "warning"
-            height: parent.height/13
-            font.pixelSize: 35
+            height: (parent.height/13) * scaleRatio
+            font.pixelSize: 35 * scaleRatio
             color: "red"
             anchors.horizontalCenter: parent.horizontalCenter
             textFormat: Text.AlignHCenter
@@ -96,7 +98,7 @@ Popup {
                 id: buttonText
                 text: parent.text
 //                color: parent.textColor
-                font.pixelSize: 40
+                font.pixelSize: 40 * scaleRatio
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
 
@@ -183,7 +185,7 @@ Popup {
         anchors.fill: parent
         color: "grey"
         opacity: 0.95
-        radius: 40
+        radius: 40 * scaleRatio
         z: -1
     }
 }

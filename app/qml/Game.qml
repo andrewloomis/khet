@@ -6,6 +6,10 @@ import khet.gamemanager 1.0
 
 Page {
     id: gamePage
+    property real scaleRatio: Math.min(appWindow.height/600,
+                                         appWindow.width/800) * 0.65
+    property int textSize: 50 * scaleRatio
+
     function reset() {
         redStats.pyramidsKilled = 0
         redStats.obelisksKilled = 0
@@ -22,12 +26,16 @@ Page {
     ColumnLayout {
         anchors.fill: parent
         Rectangle {
+            id: titleBar
+            property int preferredHeight: 100
+            property real scaleRatio: (parent.height/preferredHeight)/15
+
             Layout.fillWidth: true
-            Layout.preferredHeight: childrenRect.height + 30
+            Layout.preferredHeight: preferredHeight * scaleRatio * 1.1
             RoundButton {
                 text: "Back"
-                font.pixelSize: 50
-                padding: 20
+                font.pixelSize: 50 * parent.scaleRatio
+                padding: 20 * parent.scaleRatio
                 anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.margins: 20
@@ -41,7 +49,7 @@ Page {
                 id: titleText
                 anchors.centerIn: parent
                 text: ""
-                font.pixelSize: 70
+                font.pixelSize: 70 * gamePage.scaleRatio
                 horizontalAlignment: Text.AlignHCenter
             }
             color: "darkgrey"
@@ -58,6 +66,7 @@ Page {
                 Layout.margins: 30
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                Layout.maximumWidth: gamePage.width/6
                 color: "#770000"
                 opacity: 0.9
                 ColumnLayout {
@@ -68,7 +77,7 @@ Page {
                         text: ""
                         clip: true
                         wrapMode: Text.Wrap
-                        font.pixelSize: 50
+                        font.pixelSize: gamePage.textSize
                         horizontalAlignment: Text.AlignHCenter
                         Layout.fillWidth: true
                     }
@@ -79,30 +88,46 @@ Page {
                             + "\nObelisks: " + redStats.obelisksKilled
                         clip: true
                         wrapMode: Text.Wrap
-                        font.pixelSize: 50
-                        Layout.leftMargin: 20
+                        font.pixelSize: gamePage.textSize
+                        Layout.leftMargin: 20 * scaleRatio
                         horizontalAlignment: Text.AlignLeft
                         Layout.fillWidth: true
                     }
                 }
             }
+            Item {
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                z: -1
+                Board {
+                    anchors.centerIn: parent
+                    id: board
+                    gameManager: gameManager
+                    rotation: gameManager.myColor == "red" ? 180 : 0
+                    property real scaleRatio: Math.min(appWindow.height*0.85/board.height,
+                                                       appWindow.width*0.7/board.width)
 
-            Board {
-                id: board
-                gameManager: gameManager
-                rotation: gameManager.myColor == "red" ? 180 : 0
-//                x: (appWindow.width-board.width*scale.xScale)/2
-//                y: (appWindow.height-board.height*scale.yScale)/2
-//                transform: Scale {
-//                        id: scale
-//                    xScale: Math.min(
-//                                appWindow.width/board.width,
-//                                appWindow.height/board.height)*.85
-//                    yScale: Math.min(
-//                                appWindow.width/board.width,
-//                                appWindow.height/board.height)*.85
-//                    }
+    //                Layout.preferredWidth: board.width * scaleRatio
+    //                Layout.preferredHeight: 500
+    //                clip: true
+    //                Layout.preferredWidth: board.sourceSize.width * scaleRatio
+    //                Layout.preferredHeight: board.sourceSize.height * scaleRatio
+
+    //                x: (appWindow.width-board.width*scale.xScale)/2
+    //                y: titleBar.height + 30
+
+                    transform:
+                        Scale {
+                            id: scale
+                            origin.x: board.width/2
+                            origin.y: board.height/2
+                            xScale: board.scaleRatio
+                            yScale: board.scaleRatio
+                        }
+                }
             }
+
+
 
             Rectangle {
                 id: greyStats
@@ -112,6 +137,8 @@ Page {
                 Layout.margins: 30
                 Layout.fillHeight: true
                 Layout.fillWidth: true
+                Layout.maximumWidth: gamePage.width/6
+//                Layout.minimumWidth: parent.width/6
                 color: "silver"
                 opacity: 0.9
                 ColumnLayout {
@@ -122,7 +149,7 @@ Page {
                         text: ""
                         clip: true
                         wrapMode: Text.Wrap
-                        font.pixelSize: 50
+                        font.pixelSize: gamePage.textSize
                         horizontalAlignment: Text.AlignHCenter
                         Layout.fillWidth: true
                     }
@@ -134,8 +161,8 @@ Page {
                             + "\nObelisks: " + greyStats.obelisksKilled
                         clip: true
                         wrapMode: Text.Wrap
-                        font.pixelSize: 50
-                        Layout.leftMargin: 20
+                        font.pixelSize: gamePage.textSize
+                        Layout.leftMargin: 20 * scaleRatio
                         horizontalAlignment: Text.AlignLeft
                         Layout.fillWidth: true
                     }
@@ -152,22 +179,22 @@ Page {
         anchors.centerIn: parent
         Rectangle {
             anchors.fill: parent
-            anchors.margins: 20
+            anchors.margins: 20 * gamePage.scaleRatio
             color: "silver"
-            radius: 30
+            radius: 30 * gamePage.scaleRatio
             Text {
                 id: winnerPopup_text
                 text: ""
-                font.pixelSize: 40
+                font.pixelSize: 40 * gamePage.scaleRatio
                 anchors.fill: parent
-                anchors.margins: 10
+                anchors.margins: 10 * gamePage.scaleRatio
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
         }
         background: Rectangle {
             anchors.fill: parent
-            radius: 30
+            radius: 30 * gamePage.scaleRatio
             color: "grey"
             opacity: 0.9
         }
