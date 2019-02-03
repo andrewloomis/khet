@@ -2,7 +2,6 @@ import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Layouts 1.3
 import khet.gamemanager 1.0
-//import QtQuick.Window 2.11
 
 Page {
     id: gamePage
@@ -71,6 +70,15 @@ Page {
                 opacity: 0.9
                 ColumnLayout {
                     anchors.fill: parent
+                    Rectangle {
+                        id: redPlayerTurnIndicator
+                        visible: false
+                        color: "green"
+                        width: 50 * gamePage.scaleRatio
+                        height: width
+                        radius: width/2
+                        Layout.alignment: Qt.AlignHCenter
+                    }
                     Text {
                         id: redPanelText
                         color: "white"
@@ -107,15 +115,6 @@ Page {
                     property real scaleRatio: Math.min(appWindow.height*0.85/board.height,
                                                        appWindow.width*0.7/board.width)
 
-    //                Layout.preferredWidth: board.width * scaleRatio
-    //                Layout.preferredHeight: 500
-    //                clip: true
-    //                Layout.preferredWidth: board.sourceSize.width * scaleRatio
-    //                Layout.preferredHeight: board.sourceSize.height * scaleRatio
-
-    //                x: (appWindow.width-board.width*scale.xScale)/2
-    //                y: titleBar.height + 30
-
                     transform:
                         Scale {
                             id: scale
@@ -138,11 +137,19 @@ Page {
                 Layout.fillHeight: true
                 Layout.fillWidth: true
                 Layout.maximumWidth: gamePage.width/6
-//                Layout.minimumWidth: parent.width/6
                 color: "silver"
                 opacity: 0.9
                 ColumnLayout {
                     anchors.fill: parent
+                    Rectangle {
+                        id: greyPlayerTurnIndicator
+                        visible: true
+                        color: "green"
+                        Layout.preferredWidth: 50 * gamePage.scaleRatio
+                        Layout.preferredHeight: width
+                        radius: width/2
+                        Layout.alignment: Qt.AlignHCenter
+                    }
                     Text {
                         id: greyPanelText
                         color: "black"
@@ -215,7 +222,7 @@ Page {
 
         function stopHighlightAnimation() {
             lastOpponentPiece.stopHighlightAnimation()
-            lastOpponentPiece = undefined
+//            lastOpponentPiece = undefined
         }
 
         onPieceKilled: {
@@ -265,7 +272,14 @@ Page {
             }
             board.createOpponentBeam()
             lastOpponentPiece = piece
+            redPlayerTurnIndicator.visible = myColor == "red"
+            greyPlayerTurnIndicator.visible = myColor == "grey"
         }
+        onMyTurnFinished: {
+            redPlayerTurnIndicator.visible = myColor != "red"
+            greyPlayerTurnIndicator.visible = myColor != "grey"
+        }
+
         onEndGame: {
             console.log("endgame")
             winnerPopup_text.text = winner + " won!"

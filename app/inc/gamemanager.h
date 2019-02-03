@@ -16,6 +16,7 @@ class GameManager : public QObject
     Q_PROPERTY(QString opponent READ getOpponentUsername WRITE setOpponentUsername)
     Q_PROPERTY(QString myColor READ getMyColor NOTIFY myColorChanged)
     Q_PROPERTY(QString mode MEMBER gameMode NOTIFY modeChanged)
+//    Q_PROPERTY(bool myTurn READ isPlayerTurn)
 
 public:
     explicit GameManager(QObject *parent = nullptr);
@@ -46,6 +47,7 @@ signals:
     void opponentPieceMoved(int index, int angle, int xPos, int yPos);
     void endGame(QString winner);
     void unstackPiece(int index, QString color);
+    void myTurnFinished();
 
 private slots:
     void multiplayerGameStart(QString opponentName);

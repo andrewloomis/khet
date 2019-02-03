@@ -89,6 +89,7 @@ void GameManager::turnFinished()
 
         network->sendRequest(NetworkManager::Request::TurnComplete, data);
         moveComplete = false;
+        emit myTurnFinished();
     }
 
     game.nextTurn();

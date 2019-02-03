@@ -6,21 +6,14 @@ import khet.usermanager 1.0
 Page {
     Rectangle {
         id: background
-        property int preferredHeight: 800
+        property int preferredHeight: 900
         property int preferredWidth: 600
-//        property real scaleRatio: Math.min(column.height/background.preferredHeight,
-//                                           column.width/background.preferredWidth)
         property real scaleRatio: Math.min(appWindow.width/preferredWidth,
                                            appWindow.height/preferredHeight) * 0.8;
         color: "lightgrey"
         opacity: 0.9
         radius: 30
         anchors.centerIn: parent
-//        width: appWindow.width > background.preferredWidth ?
-//                   background.preferredWidth : appWindow.width - 30
-//        height: appWindow.height > background.preferredHeight ?
-//                    background.preferredHeight : appWindow.height - 30
-
         width: preferredWidth * scaleRatio
         height: preferredHeight * scaleRatio
 
@@ -128,6 +121,9 @@ Page {
                 id: logoutButton
                 visible: false
                 font.pixelSize: 30 * background.scaleRatio
+                padding: 5 * background.scaleRatio
+                radius: 10 * background.scaleRatio
+                Layout.preferredHeight: 40
                 Layout.alignment: Qt.AlignHCenter
                 text: "Logout"
                 font.family: "Ubuntu"

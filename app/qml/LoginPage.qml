@@ -115,7 +115,7 @@ Popup {
 
             Timer {
                 id: waitTimer
-                interval: 1500
+                interval: 2000
                 onTriggered: {
                     parent.state = ""
                     if (!userManager.isLoggedIn())

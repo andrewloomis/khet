@@ -5,8 +5,8 @@ import QtQuick.Layouts 1.3
 Popup {
     id: root
     dim: true
-    height: row.childrenRect.height + 70 * root.scaleRatio
-    width: row.childrenRect.width + 70 * root.scaleRatio
+    height: 500 * root.scaleRatio
+    width: 770 * root.scaleRatio
     property real scaleRatio
 
     RowLayout {
