@@ -63,11 +63,29 @@ Item {
 
     id: piece
     width: interiorSpaceWidth
+    visible: opacity != 0
     height: width
     anchors.left: parent.left
     anchors.top: parent.top
     anchors.leftMargin: CoordCalculator.pieceLeftAnchor(xPos)
     anchors.topMargin: CoordCalculator.pieceTopAnchor(yPos)
+
+    Behavior on opacity {
+        NumberAnimation {
+            duration: 5000
+        }
+    }
+    Behavior on anchors.leftMargin {
+        NumberAnimation {
+            duration: 1000
+        }
+    }
+    Behavior on anchors.topMargin {
+        NumberAnimation {
+            duration: 1000
+        }
+    }
+
     Image {
         id: pieceImage
         anchors.centerIn: piece

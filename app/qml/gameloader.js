@@ -22,7 +22,8 @@ function getPiece(index)
 function killPiece(index)
 {
     var piece = pieces[index]
-    piece.visible = false
+//    piece.visible = false
+    piece.opacity = 0
 }
 
 function unstackPiece(index, color)

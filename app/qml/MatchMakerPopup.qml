@@ -21,8 +21,6 @@ Popup {
             Layout.alignment: Qt.AlignHCenter
             Layout.fillWidth: true
             Layout.fillHeight: true
-//            height: childrenRect.height + 50 * root.scaleRatio
-//            width: childrenRect.width + 50 * root.scaleRatio
             radius: 20 * root.scaleRatio
             color: "#605060"
             Text {

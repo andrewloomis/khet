@@ -183,12 +183,17 @@ Page {
         dim: true
         height: parent.height/6
         width: parent.width/4
-        anchors.centerIn: parent
+        padding: 0
+
+        topMargin: 200 * gamePage.scaleRatio
+        leftMargin: 100 * gamePage.scaleRatio
+
         Rectangle {
             anchors.fill: parent
             anchors.margins: 20 * gamePage.scaleRatio
             color: "silver"
             radius: 30 * gamePage.scaleRatio
+            opacity: 0.9
             Text {
                 id: winnerPopup_text
                 text: ""
@@ -203,12 +208,17 @@ Page {
             anchors.fill: parent
             radius: 30 * gamePage.scaleRatio
             color: "grey"
-            opacity: 0.9
+            opacity: 0.7
         }
         onClosed: {
             stack.pop()
             gamePage.reset()
         }
+    }
+    Timer {
+        id: winnerPopup_timer
+        interval: 5000
+        onTriggered: winnerPopup.open()
     }
 
     background: Rectangle {
@@ -283,7 +293,7 @@ Page {
         onEndGame: {
             console.log("endgame")
             winnerPopup_text.text = winner + " won!"
-            winnerPopup.open()
+            winnerPopup_timer.start()
             console.log("1")
         }
     }

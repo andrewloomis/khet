@@ -68,7 +68,7 @@ Page {
                         highlighted = false
                     }
                 }
-                onPressed: loginPage.open()
+                onPressed: if (!isLoggedIn()) loginPage.open()
             }
             RoundButton {
                 text: "Sign Up"
@@ -86,7 +86,7 @@ Page {
                         highlighted = false
                     }
                 }
-                onPressed: signUpPage.open()
+                onPressed: if (!isLoggedIn()) signUpPage.open()
             }
             RoundButton {
                 text: "Rankings"

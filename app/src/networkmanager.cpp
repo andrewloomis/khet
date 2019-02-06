@@ -59,8 +59,9 @@ void NetworkManager::onBinaryMessageReceived(QByteArray message)
         {
             playerList << player.toString();
         }
-        playerList.isEmpty() ? emit playerQueryReply(playerList, false) :
-                               emit playerQueryReply(playerList, true);
+        emit playerQueryReply(playerList, true);
+//        playerList.isEmpty() ? emit playerQueryReply(playerList, false) :
+//                               emit playerQueryReply(playerList, true);
     }
     else if (msg.value("response") == "game_request")
     {

@@ -35,7 +35,7 @@ Image {
 
     Timer {
         id: beamDestroyTimer
-        interval: 1000
+        interval: 5000
         onTriggered: {
             BeamMapper.destroyBeam()
         }
