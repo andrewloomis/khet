@@ -35,5 +35,8 @@
         <file>res/mainmenuimage.png</file>
         <file>RankingsPopup.qml</file>
         <file>res/board-small.png</file>
+        <file>res/ai-icon.png</file>
+        <file>res/pewpew.wav</file>
+        <file>res/deathstar.wav</file>
     </qresource>
 </RCC>

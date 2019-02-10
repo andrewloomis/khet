@@ -17,7 +17,10 @@ Page {
         greyPanelText.text = ""
         redPanelText.text = ""
         titleText.text = ""
-        gameManager.lastOpponentPiece.stopHighlightAnimation()
+        if (gameManager.lastOpponentPiece)
+        {
+            gameManager.lastOpponentPiece.stopHighlightAnimation()
+        }
         gameManager.reset()
         board.reset()
     }
@@ -231,8 +234,10 @@ Page {
         property Piece lastOpponentPiece
 
         function stopHighlightAnimation() {
-            lastOpponentPiece.stopHighlightAnimation()
-//            lastOpponentPiece = undefined
+            if (lastOpponentPiece)
+            {
+                lastOpponentPiece.stopHighlightAnimation()
+            }
         }
 
         onPieceKilled: {
@@ -284,6 +289,7 @@ Page {
             lastOpponentPiece = piece
             redPlayerTurnIndicator.visible = myColor == "red"
             greyPlayerTurnIndicator.visible = myColor == "grey"
+            board.playLaserSound()
         }
         onMyTurnFinished: {
             redPlayerTurnIndicator.visible = myColor != "red"
@@ -291,10 +297,9 @@ Page {
         }
 
         onEndGame: {
-            console.log("endgame")
             winnerPopup_text.text = winner + " won!"
             winnerPopup_timer.start()
-            console.log("1")
+            board.playDeathStarSound()
         }
     }
 }

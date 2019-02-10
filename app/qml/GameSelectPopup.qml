@@ -6,7 +6,7 @@ Popup {
     id: root
     dim: true
     height: 500 * root.scaleRatio
-    width: 770 * root.scaleRatio
+    width: 800 * root.scaleRatio
     property real scaleRatio
 
     RowLayout {

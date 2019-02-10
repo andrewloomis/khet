@@ -1,6 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.4
 import QtQuick.Window 2.12
+import QtMultimedia 5.8
 import "gameloader.js" as GameLoader
 import "beammapper.js" as BeamMapper
 import khet.gamemanager 1.0
@@ -32,6 +33,14 @@ Image {
     {
         GameLoader.loadGame(gameManager.getPiecePositions())
     }
+    function playLaserSound()
+    {
+        pewpew.play()
+    }
+    function playDeathStarSound()
+    {
+        deathstar.play()
+    }
 
     Timer {
         id: beamDestroyTimer
@@ -55,9 +64,20 @@ Image {
         beamDestroyTimer.start()
     }
 
+    SoundEffect {
+        id: pewpew
+        source: "res/pewpew.wav"
+    }
+
+    SoundEffect {
+        id: deathstar
+        source: "res/deathstar.wav"
+    }
+
     Button {
         id: greyPlayerButton
-        enabled: gameManager.myColor == "grey"
+        enabled: gameManager.mode == "sandbox" ||
+                 gameManager.myColor == "grey"
         width: 35/2
         height: width
         anchors.right: parent.right
@@ -81,6 +101,7 @@ Image {
                 beamCreated = true
                 gameManager.turnFinished()
                 gameManager.stopHighlightAnimation()
+                pewpew.play()
             }
         }
         onHoveredChanged: {
@@ -102,7 +123,8 @@ Image {
 
     Button {
         id: redPlayerButton
-        enabled: gameManager.myColor == "red"
+        enabled: gameManager.mode == "sandbox" ||
+                 gameManager.myColor == "red"
         width: 35/2
         height: width
         anchors.left: parent.left
@@ -125,6 +147,7 @@ Image {
                 beamCreated = true
                 gameManager.turnFinished()
                 gameManager.stopHighlightAnimation()
+                pewpew.play()
             }
         }
         onHoveredChanged: {

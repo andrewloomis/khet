@@ -42,7 +42,8 @@ void GameManager::pharoahKilled(int index)
             Color::Red ? "grey" : "red";
     emit endGame(winner);
     // Only one player can send game over request
-    if (me->pieceColor() == game.getPieceColor(static_cast<size_t>(index)))
+    if (me->pieceColor() == game.getPieceColor(static_cast<size_t>(index))
+            && gameMode != "sandbox")
     {
         QJsonObject data;
         data["user"] = me->getUsername();
@@ -61,10 +62,13 @@ void GameManager::setPlayerColor(QString color)
 
 void GameManager::moveOpponentPiece(int index, int angle, int xPos, int yPos)
 {
-    emit opponentPieceMoved(index, angle, xPos, yPos);
-    game.nextTurn();
-    qDebug() << (game.currentPlayerTurn() == Color::Red ? "Red" : "Grey")
-             << "player turn";
+    if (gameMode != "sandbox")
+    {
+        emit opponentPieceMoved(index, angle, xPos, yPos);
+        game.nextTurn();
+        qDebug() << (game.currentPlayerTurn() == Color::Red ? "Red" : "Grey")
+                 << "player turn";
+    }
 }
 
 void GameManager::moveFinished()
@@ -77,7 +81,7 @@ void GameManager::moveFinished()
 
 void GameManager::turnFinished()
 {
-    if (isPlayerTurn() && moveComplete)
+    if (isPlayerTurn() && moveComplete && gameMode != "sandbox")
     {
         QJsonObject data;
         data["user"] = me->getUsername();
