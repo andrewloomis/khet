@@ -41,6 +41,13 @@ Image {
     {
         deathstar.play()
     }
+    function updateButtons()
+    {
+        greyPlayerButton.enabled = gameManager.mode == "sandbox" ||
+                gameManager.myColor == "grey"
+        redPlayerButton.enabled = gameManager.mode == "sandbox" ||
+                gameManager.myColor == "red"
+    }
 
     Timer {
         id: beamDestroyTimer

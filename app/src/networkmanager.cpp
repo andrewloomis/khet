@@ -164,6 +164,8 @@ void NetworkManager::sendRequest(const Request& req, const QJsonObject& data)
         break;
     case Request::Rankings:
         request["request"] = "rankings";
+        request["data"] = data;
+        break;
     }
     auto message = QJsonDocument(request).toJson();
     if (isConnected())

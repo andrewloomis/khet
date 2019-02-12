@@ -27,7 +27,9 @@ void UserManager::addNetworkManager(std::shared_ptr<NetworkManager> nm)
 
 void UserManager::getRankings()
 {
-    network->sendRequest(NetworkManager::Request::Rankings, QJsonObject());
+    QJsonObject data;
+    data["user"] = getUsername();
+    network->sendRequest(NetworkManager::Request::Rankings, data);
 }
 
 void UserManager::rankingsObjReceived(QJsonObject rankings)

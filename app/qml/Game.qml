@@ -267,6 +267,7 @@ Page {
             {
                 titleText.text = me + " vs. " + opponent
             }
+            board.updateButtons()
         }
         onMyColorChanged: {
             board.rotation = myColor == "red" ? 180 : 0
