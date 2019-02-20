@@ -60,6 +60,18 @@ Popup {
     Popup {
         id: invitePopup
         property string opponent
+        property string config: "classic"
+
+        function setConfiguration(config)
+        {
+            if (config === "imhotep" ||
+                    config === "dynasty" ||
+                    config === "classic")
+            {
+                invitePopup.config = config
+            }
+        }
+
         parent: root.parent
         dim: true
         width: parent.width/2
@@ -103,7 +115,8 @@ Popup {
                     padding: 7 * root.scaleRatio
                     Layout.fillWidth: true
                     onPressed: {
-                        matchMaker.sendInviteAccepted(invitePopup.opponent)
+                        matchMaker.sendInviteAccepted(invitePopup.opponent, invitePopup.config)
+                        game.setConfiguration(invitePopup.config)
                         stack.push(game)
                         invitePopup.close()
                         root.close()
@@ -128,10 +141,22 @@ Popup {
         }
     }
 
+    function setConfiguration(config)
+    {
+        if (config === "imhotep" ||
+                config === "dynasty" ||
+                config === "classic")
+        {
+            matchMaker.config = config
+        }
+    }
+
     MatchMaker {
         id: matchMaker
         objectName: "matchMaker"
         property var players: []
+        property string config: "classic"
+
         onOnlinePlayerFound: {
             var button = Qt.createQmlObject("import QtQuick.Controls 2.4; RoundButton{}", column, "");
             button.text = newPlayer
@@ -143,7 +168,7 @@ Popup {
             root.rows += 1
 
             function handlePress() {
-                matchMaker.sendGameInvite(newPlayer)
+                matchMaker.sendGameInvite(newPlayer, config)
             }
         }
         onOnlinePlayerRemoved: {
@@ -158,9 +183,11 @@ Popup {
         }
         onGameInvite: {
             invitePopup.opponent = opponentName
+            invitePopup.setConfiguration(config)
             invitePopup.open()
         }
         onGameApproved: {
+            game.setConfiguration(config)
             stack.push(game)
             root.close()
         }

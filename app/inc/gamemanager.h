@@ -24,6 +24,7 @@ public:
     void addPlayer(std::shared_ptr<Player> player) { me = player; }
 
     // Game logic
+    Q_INVOKABLE void setupBoard(QString config);
     Q_INVOKABLE QList<int> getPiecePositions() const;
     Q_INVOKABLE int isPieceAtPosition(int x, int y) const;
     Q_INVOKABLE int possibleTranslationsForPiece(int index);

@@ -33,7 +33,9 @@ Popup {
             onPressed: {
                 if (mainMenu.isLoggedIn())
                 {
-                    matchMakerPopup.open()
+                    gameConfigPopup.setMode("multiplayer")
+                    gameConfigPopup.open()
+//                    matchMakerPopup.open()
                     root.close()
                 }
             }
@@ -55,7 +57,9 @@ Popup {
                 }
             }
             onPressed: {
-                stack.push(game)
+                gameConfigPopup.setMode("sandbox")
+                gameConfigPopup.open()
+//                stack.push(game)
                 root.close()
             }
         }
@@ -66,5 +70,10 @@ Popup {
         opacity: 0.9
         radius: 40 * root.scaleRatio
         z: -1
+    }
+    GameConfigPopup {
+        id: gameConfigPopup
+        scaleRatio: root.scaleRatio
+        anchors.centerIn: parent
     }
 }

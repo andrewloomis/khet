@@ -16,6 +16,8 @@ Page {
         greyStats.obelisksKilled = 0
         greyPanelText.text = ""
         redPanelText.text = ""
+        greyPlayerTurnIndicator.visible = true;
+        redPlayerTurnIndicator.visible = false;
         titleText.text = ""
         if (gameManager.lastOpponentPiece)
         {
@@ -23,6 +25,17 @@ Page {
         }
         gameManager.reset()
         board.reset()
+    }
+
+    function setConfiguration(config)
+    {
+        if (config === "imhotep" ||
+                config === "dynasty" ||
+                config === "classic")
+        {
+            gameManager.setupBoard(config)
+            board.reset()
+        }
     }
 
     ColumnLayout {
@@ -54,6 +67,18 @@ Page {
                 font.pixelSize: 70 * gamePage.scaleRatio
                 horizontalAlignment: Text.AlignHCenter
             }
+            RoundButton {
+                text: "Rules"
+                font.pixelSize: 45 * parent.scaleRatio
+                padding: 20 * parent.scaleRatio
+                anchors.right: parent.right
+                anchors.verticalCenter: parent.verticalCenter
+                anchors.margins: 20
+                onPressed: {
+                    rulesPopup.open()
+                }
+            }
+
             color: "darkgrey"
         }
 
@@ -128,8 +153,6 @@ Page {
                         }
                 }
             }
-
-
 
             Rectangle {
                 id: greyStats
@@ -281,7 +304,7 @@ Page {
             piece.startHighlightAnimation()
             piece.updatePosition(xPos, yPos)
             if (piece.angle !== angle) {
-                piece.rotDir = (angle > piece.angle) ? "CW" : "CCW"
+                piece.rotDir = ((angle % 360) > piece.angle) ? "CW" : "CCW"
                 piece.angle = angle
                 gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CW to", angle, "degrees")
@@ -302,6 +325,12 @@ Page {
             winnerPopup_timer.start()
             board.playDeathStarSound()
         }
+    }
+
+    RulesPopup {
+        id: rulesPopup
+        anchors.centerIn: parent
+        scaleRatio: gamePage.scaleRatio * 0.8
     }
 }
 

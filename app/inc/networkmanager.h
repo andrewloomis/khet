@@ -45,7 +45,7 @@ signals:
     void loginReply(QString username, bool result);
     void saltReceived(QString username, QString salt, bool result);
     void playerQueryReply(QList<QString> players, bool result);
-    void gameInviteReceived(QString opponentName);
+    void gameInviteReceived(QString opponentName, QString config);
     void gameRequestApproved(QString opponentName);
     void inviteAccepted(QString opponentName);
     void setColorReceived(QString color);

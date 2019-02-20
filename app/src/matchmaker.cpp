@@ -22,6 +22,7 @@ void MatchMaker::processNewPlayers(QList<QString> players, bool result)
         {
             if (!onlinePlayers.contains(player))
             {
+                qDebug() << "found" << player;
                 onlinePlayers << player;
                 emit onlinePlayerFound(player);
             }
@@ -30,15 +31,16 @@ void MatchMaker::processNewPlayers(QList<QString> players, bool result)
         {
             if (!players.contains(player))
             {
+                onlinePlayers.removeAll(player);
                 emit onlinePlayerRemoved(player);
             }
         }
     }
 }
 
-void MatchMaker::gameInviteReceived(QString opponentName)
+void MatchMaker::gameInviteReceived(QString opponentName, QString config)
 {
-    emit gameInvite(opponentName);
+    emit gameInvite(opponentName, config);
 }
 
 void MatchMaker::gameRequestApproved(QString opponentName)
@@ -46,19 +48,21 @@ void MatchMaker::gameRequestApproved(QString opponentName)
     emit gameApproved(opponentName);
 }
 
-void MatchMaker::sendGameInvite(QString opponentName)
+void MatchMaker::sendGameInvite(QString opponentName, QString config)
 {
     QJsonObject data;
     data["user"] = me->getUsername();
     data["opponent"] = opponentName;
+    data["config"] = config;
     network->sendRequest(NetworkManager::Request::GameRequest, data);
 }
 
-void MatchMaker::sendInviteAccepted(QString opponentName)
+void MatchMaker::sendInviteAccepted(QString opponentName, QString config)
 {
     QJsonObject data;
     data["user"] = me->getUsername();
     data["opponent"] = opponentName;
+    data["config"] = config;
     network->sendReply(NetworkManager::Reply::InviteAccepted, data);
 }
 

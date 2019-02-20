@@ -23,6 +23,22 @@ void GameManager::addNetworkManager(std::shared_ptr<NetworkManager> nm)
             this, &GameManager::endGameReceived);
 }
 
+void GameManager::setupBoard(QString config)
+{
+    if (config == "classic")
+    {
+        game.startGame(GameConfig::Classic);
+    }
+    else if (config == "imhotep")
+    {
+        game.startGame(GameConfig::Imhotep);
+    }
+    else if (config == "dynasty")
+    {
+        game.startGame(GameConfig::Dynasty);
+    }
+}
+
 void GameManager::reset()
 {
     moveComplete = false;

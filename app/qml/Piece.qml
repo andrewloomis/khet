@@ -86,6 +86,15 @@ Item {
         }
     }
 
+    // Index markings
+    Text {
+        visible: false
+        text: piece.index.toString()
+        font.pixelSize: 20
+        anchors.centerIn: parent
+        z: 1
+    }
+
     Image {
         id: pieceImage
         anchors.centerIn: piece
@@ -167,7 +176,7 @@ Item {
         onClicked: {
 //            console.log("My color:", gameManager.myColor)
 //            console.log("Piece color:", gameManager.getPieceColor(index))
-            console.log("my turn:", gameManager.isPlayerTurn())
+            console.log("my turn:", gameManager.isPlayerTurn(), "move comp:", gameManager.isMoveComplete(), "mycolor:", gameManager.myColor)
             if (gameManager.mode === "sandbox" || (gameManager.getPieceColor(index) === gameManager.myColor &&
                     gameManager.isPlayerTurn() && !gameManager.isMoveComplete()))
             {

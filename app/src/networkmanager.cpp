@@ -77,7 +77,8 @@ void NetworkManager::onBinaryMessageReceived(QByteArray message)
     else if (msg.value("request") == "game_invite")
     {
         auto opponent = msg.value("fromUser").toString();
-        emit gameInviteReceived(opponent);
+        auto config = msg.value("config").toString();
+        emit gameInviteReceived(opponent, config);
     }
     else if (msg.value("command") == "set_color")
     {

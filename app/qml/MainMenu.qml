@@ -4,9 +4,18 @@ import QtQuick.Layouts 1.3
 import khet.usermanager 1.0
 
 Page {
+    Text {
+        text: "v1.01"
+        font.pixelSize: 20
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.margins: 5
+        color: "white"
+    }
+
     Rectangle {
         id: background
-        property int preferredHeight: 900
+        property int preferredHeight: 1000
         property int preferredWidth: 600
         property real scaleRatio: Math.min(appWindow.width/preferredWidth,
                                            appWindow.height/preferredHeight) * 0.8;
@@ -106,6 +115,24 @@ Page {
                 }
                 onPressed: if(isLoggedIn()) rankingsPopup.open()
             }
+            RoundButton {
+                text: "Rules"
+                font.family: "Ubuntu"
+                font.pointSize: 50 * background.scaleRatio
+                Layout.alignment: Qt.AlignHCenter
+                radius: 10
+                padding: 20 * background.scaleRatio
+                onHoveredChanged: {
+                    if(hovered)
+                    {
+                        highlighted = true
+                    }
+                    else {
+                        highlighted = false
+                    }
+                }
+                onPressed: rulesPopup.open()
+            }
             Text {
                 id: loginText
                 text: "Not logged in"
@@ -135,6 +162,12 @@ Page {
             }
         }
     }
+    RulesPopup {
+        id: rulesPopup
+        anchors.centerIn: parent
+        scaleRatio: background.scaleRatio
+    }
+
     RankingsPopup {
         id: rankingsPopup
         anchors.centerIn: parent

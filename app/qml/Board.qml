@@ -43,10 +43,10 @@ Image {
     }
     function updateButtons()
     {
-        greyPlayerButton.enabled = gameManager.mode == "sandbox" ||
-                gameManager.myColor == "grey"
-        redPlayerButton.enabled = gameManager.mode == "sandbox" ||
-                gameManager.myColor == "red"
+//        greyPlayerButton.enabled = gameManager.mode == "sandbox" ||
+//                gameManager.myColor == "grey"
+//        redPlayerButton.enabled = gameManager.mode == "sandbox" ||
+//                gameManager.myColor == "red"
     }
 
     Timer {
@@ -177,6 +177,6 @@ Image {
     Component.onCompleted: {
         BeamMapper.init(root)
         GameLoader.init(root, gameManager)
-        GameLoader.loadGame(gameManager.getPiecePositions())
+//        GameLoader.loadGame(gameManager.getPiecePositions())
     }
 }

@@ -38,5 +38,10 @@
         <file>res/ai-icon.png</file>
         <file>res/pewpew.wav</file>
         <file>res/deathstar.wav</file>
+        <file>GameConfigPopup.qml</file>
+        <file>RulesPopup.qml</file>
+        <file>res/khetrules3.png</file>
+        <file>res/khetrules2.png</file>
+        <file>res/khetrules1.png</file>
     </qresource>
 </RCC>
