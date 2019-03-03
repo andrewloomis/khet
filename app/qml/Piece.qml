@@ -19,7 +19,6 @@ Item {
         var swappedPieceIndex = gameManager.isPieceAtPosition(newX, newY)
         if (swappedPieceIndex >= 0)
         {
-            gameManager.updatePiecePosition(swappedPieceIndex, xPos, yPos);
             var swappedPiece = board.getPiece(swappedPieceIndex)
             swappedPiece.xPos = xPos
             swappedPiece.yPos = yPos
@@ -174,8 +173,6 @@ Item {
     MouseArea {
         anchors.fill: piece
         onClicked: {
-//            console.log("My color:", gameManager.myColor)
-//            console.log("Piece color:", gameManager.getPieceColor(index))
             console.log("my turn:", gameManager.isPlayerTurn(), "move comp:", gameManager.isMoveComplete(), "mycolor:", gameManager.myColor)
             if (gameManager.mode === "sandbox" || (gameManager.getPieceColor(index) === gameManager.myColor &&
                     gameManager.isPlayerTurn() && !gameManager.isMoveComplete()))

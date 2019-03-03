@@ -36,6 +36,12 @@ public:
     Q_INVOKABLE QString getPieceColor(int index) const;
     Q_INVOKABLE void turnFinished();
     Q_INVOKABLE void moveFinished();
+    Q_INVOKABLE void undoLastMove();
+
+    Q_INVOKABLE int getLastMoveIndex() const { return lastMove.pieceIndex; }
+    Q_INVOKABLE int getLastMoveFromX() const { return lastMove.fromPos.x; }
+    Q_INVOKABLE int getLastMoveFromY() const { return lastMove.fromPos.y; }
+    Q_INVOKABLE int getLastMoveFromAngle() const { return lastMove.fromAngle; }
 
     Q_INVOKABLE bool isMoveComplete() const { return moveComplete; }
     Q_INVOKABLE bool isPlayerTurn() const { return game.currentPlayerTurn() == me->pieceColor(); }
@@ -49,6 +55,7 @@ signals:
     void endGame(QString winner);
     void unstackPiece(int index, QString color);
     void myTurnFinished();
+    void movedPiece();
 
 private slots:
     void multiplayerGameStart(QString opponentName);
@@ -64,8 +71,23 @@ private:
     QString getOpponentUsername() { return opponent.getUsername(); }
     void setOpponentUsername(QString name) { opponent.setUsername(name); }
 
+    struct LastMove
+    {
+        LastMove() {}
+        LastMove(int index, Position from, Position to)
+            : pieceIndex(index), fromPos(from), toPos(to) {}
+        void reset() {
+            pieceIndex = -1;
+        }
+        int pieceIndex = -1;
+        Position fromPos;
+        Position toPos;
+        int fromAngle = -1;
+        int toAngle = -1;
+    } lastMove;
+
     bool moveComplete = false;
-    int movedPieceIndex = -1;
+//    int movedPieceIndex = -1;
     QString gameMode = "sandbox";
     Game game;
     std::shared_ptr<Player> me = std::make_shared<Player>();

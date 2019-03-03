@@ -18,6 +18,8 @@ Page {
         redPanelText.text = ""
         greyPlayerTurnIndicator.visible = true;
         redPlayerTurnIndicator.visible = false;
+        greyUndoButton.visible = false
+        redUndoButton.visible = false
         titleText.text = ""
         if (gameManager.lastOpponentPiece)
         {
@@ -25,6 +27,27 @@ Page {
         }
         gameManager.reset()
         board.reset()
+    }
+
+    function undoLastMove()
+    {
+        var movedPiece = board.getPiece(gameManager.getLastMoveIndex())
+        console.log(gameManager.getLastMoveFromAngle())
+        var fromAngle = gameManager.getLastMoveFromAngle()
+        if (movedPiece.angle === fromAngle)
+        {
+            movedPiece.updatePosition(gameManager.getLastMoveFromX(),
+                                 gameManager.getLastMoveFromY())
+        }
+        else
+        {
+            if ((movedPiece.angle % 360) == 0) movedPiece.rotDir = fromAngle === 90 ? "CW" : "CCW"
+            else if ((movedPiece.angle % 360) == 270) movedPiece.rotDir = fromAngle === 0 ? "CW" : "CCW"
+            else movedPiece.rotDir = ((fromAngle % 360) > (movedPiece.angle % 360)) ? "CW" : "CCW"
+            movedPiece.angle = fromAngle
+            gameManager.updatePieceAngle(movedPiece.index, movedPiece.angle)
+        }
+        gameManager.undoLastMove()
     }
 
     function setConfiguration(config)
@@ -117,6 +140,20 @@ Page {
                         horizontalAlignment: Text.AlignHCenter
                         Layout.fillWidth: true
                     }
+
+                    RoundButton {
+                        id: redUndoButton
+                        text: "Undo"
+                        visible: false
+                        font.pixelSize: 30 * gamePage.scaleRatio
+                        padding: 20 * gamePage.scaleRatio
+                        Layout.alignment: Qt.AlignHCenter
+                        onPressed: {
+                            gamePage.undoLastMove()
+                            redUndoButton.visible = false
+                        }
+                    }
+
                     Text {
                         id: redPiecesKilledList
                         color: "lightgrey"
@@ -187,6 +224,18 @@ Page {
                         Layout.fillWidth: true
                     }
 
+                    RoundButton {
+                        id: greyUndoButton
+                        text: "Undo"
+                        visible: false
+                        font.pixelSize: 30 * gamePage.scaleRatio
+                        padding: 20 * gamePage.scaleRatio
+                        Layout.alignment: Qt.AlignHCenter
+                        onPressed: {
+                            gamePage.undoLastMove()
+                            greyUndoButton.visible = false
+                        }
+                    }
                     Text {
                         id: greyPiecesKilledList
                         color: "#444444"
@@ -263,6 +312,20 @@ Page {
             }
         }
 
+        onMovedPiece: {
+            if (gameManager.isPlayerTurn())
+            {
+                if (gameManager.myColor == "red")
+                {
+                    redUndoButton.visible = true
+                }
+                else if (gameManager.myColor == "grey")
+                {
+                    greyUndoButton.visible = true
+                }
+            }
+        }
+
         onPieceKilled: {
             board.killPiece(index)
             switch(type)
@@ -304,7 +367,9 @@ Page {
             piece.startHighlightAnimation()
             piece.updatePosition(xPos, yPos)
             if (piece.angle !== angle) {
-                piece.rotDir = ((angle % 360) > piece.angle) ? "CW" : "CCW"
+                if ((piece.angle % 360) == 0) piece.rotDir = angle == 90 ? "CW" : "CCW"
+                else if ((movedPiece.angle % 360) == 270) movedPiece.rotDir = fromAngle === 0 ? "CW" : "CCW"
+                else piece.rotDir = ((angle % 360) > (piece.angle % 360)) ? "CW" : "CCW"
                 piece.angle = angle
                 gameManager.updatePieceAngle(index, angle)
                 console.log("piece", index, "rotating CW to", angle, "degrees")
@@ -318,6 +383,8 @@ Page {
         onMyTurnFinished: {
             redPlayerTurnIndicator.visible = myColor != "red"
             greyPlayerTurnIndicator.visible = myColor != "grey"
+            redUndoButton.visible = false;
+            greyUndoButton.visible = false;
         }
 
         onEndGame: {

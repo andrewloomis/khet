@@ -5,7 +5,7 @@ import khet.usermanager 1.0
 
 Page {
     Text {
-        text: "v1.01"
+        text: "v1.02 - 3/3/2019"
         font.pixelSize: 20
         anchors.left: parent.left
         anchors.bottom: parent.bottom
@@ -15,7 +15,7 @@ Page {
 
     Rectangle {
         id: background
-        property int preferredHeight: 1000
+        property int preferredHeight: 1100
         property int preferredWidth: 600
         property real scaleRatio: Math.min(appWindow.width/preferredWidth,
                                            appWindow.height/preferredHeight) * 0.8;

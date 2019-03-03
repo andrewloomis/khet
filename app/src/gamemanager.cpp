@@ -42,9 +42,22 @@ void GameManager::setupBoard(QString config)
 void GameManager::reset()
 {
     moveComplete = false;
-    movedPieceIndex = -1;
+//    movedPieceIndex = -1;
+    lastMove.reset();
     gameMode = "sandbox";
     game.reset();
+}
+
+void GameManager::undoLastMove()
+{
+    if (isPlayerTurn())
+    {
+//        game.updatePieceAngle(lastMove.pieceIndex, lastMove.fromAngle);
+//        game.updatePiecePosition(lastMove.pieceIndex, lastMove.fromPos.x, lastMove.fromPos.y);
+        moveComplete = false;
+        qDebug() << "turn undone";
+    }
+    else qDebug() << "cannot undo, not player turn";
 }
 
 void GameManager::endGameReceived(QString winner)
@@ -92,6 +105,7 @@ void GameManager::moveFinished()
     if (isPlayerTurn())
     {
         moveComplete = true;
+        emit movedPiece();
     }
 }
 
@@ -101,9 +115,15 @@ void GameManager::turnFinished()
     {
         QJsonObject data;
         data["user"] = me->getUsername();
-        data["piece_index"] = movedPieceIndex;
-        data["piece_angle"] = game.getPieceAngle(static_cast<size_t>(movedPieceIndex));
-        Position pos = game.getPiecePosition(static_cast<size_t>(movedPieceIndex));
+//        data["piece_index"] = movedPieceIndex;
+//        data["piece_angle"] = game.getPieceAngle(static_cast<size_t>(movedPieceIndex));
+//        Position pos = game.getPiecePosition(static_cast<size_t>(movedPieceIndex));
+//        data["x_pos"] = pos.x;
+//        data["y_pos"] = pos.y;
+
+        data["piece_index"] = lastMove.pieceIndex;
+        data["piece_angle"] = lastMove.toAngle;
+        Position pos = lastMove.toPos;
         data["x_pos"] = pos.x;
         data["y_pos"] = pos.y;
 
@@ -182,15 +202,28 @@ int GameManager::possibleTranslationsForPiece(int index)
 
 void GameManager::updatePiecePosition(int index, int x, int y)
 {
+
+//    movedPieceIndex = index;
+    lastMove.pieceIndex = index;
+    lastMove.fromPos = game.getPiecePosition(index);
+    lastMove.fromAngle = game.getPieceAngle(index);
+    lastMove.toPos = {x,y};
+    lastMove.toAngle = game.getPieceAngle(index);
+
     game.updatePiecePosition(static_cast<std::size_t>(index),x,y);
-    movedPieceIndex = index;
     moveFinished();
 }
 
 void GameManager::updatePieceAngle(int index, int angle)
 {
+    lastMove.pieceIndex = index;
+    lastMove.fromPos = game.getPiecePosition(index);
+    lastMove.fromAngle = game.getPieceAngle(index);
+    lastMove.toPos = game.getPiecePosition(index);
+    lastMove.toAngle = angle;
+
     game.updatePieceAngle(static_cast<std::size_t>(index),angle);
-    movedPieceIndex = index;
+//    movedPieceIndex = index;
     moveFinished();
 }
 
